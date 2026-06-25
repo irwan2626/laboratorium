@@ -92,6 +92,33 @@
             gap: 12px;
         }
 
+        .logout-top-right {
+            display: none;
+            flex: 0 0 auto;
+            margin-left: auto;
+            border: 1px solid var(--outline-variant);
+            border-radius: var(--radius);
+            padding: 10px 12px;
+            background: var(--surface-container-lowest);
+            color: var(--error);
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .logout-top-right:hover {
+            background: var(--error-container);
+            color: var(--error);
+        }
+
+        .logout-top-right .logout-button {
+            width: auto;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: inherit;
+        }
+
         .mobile-menu-button {
             display: none;
             width: 42px;
@@ -675,6 +702,10 @@
                 padding-bottom: 14px;
             }
 
+            .brand-header {
+                align-items: center;
+            }
+
             .brand h1 {
                 font-size: 20px;
                 line-height: 28px;
@@ -686,6 +717,14 @@
 
             .mobile-menu-button {
                 display: none;
+            }
+
+            .logout-top-right {
+                display: inline-flex;
+            }
+
+            .logout-top-right .logout-button {
+                min-height: 0;
             }
 
             .mobile-menu-panel {
@@ -744,11 +783,7 @@
             }
 
             .logout-form {
-                margin-top: 0;
-            }
-
-            .logout-button {
-                width: auto;
+                display: none;
             }
 
             .content {
@@ -861,6 +896,19 @@
                     <label class="mobile-menu-button" for="asisten-menu-toggle" aria-label="Buka menu">
                         <span></span>
                     </label>
+                    <form class="logout-top-right" method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="logout-button" type="submit">
+                            <span class="nav-item-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M10 17l5-5-5-5"></path>
+                                    <path d="M15 12H4"></path>
+                                    <path d="M20 4v16"></path>
+                                </svg>
+                            </span>
+                            <span class="menu-label">Logout</span>
+                        </button>
+                    </form>
                 </div>
                 <p>Panel pendataan kerusakan alat</p>
                 <div class="account-box">
@@ -906,19 +954,6 @@
                     </a>
                 </nav>
 
-                <form class="logout-form" method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button class="logout-button" type="submit">
-                        <span class="nav-item-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M10 17l5-5-5-5"></path>
-                                <path d="M15 12H4"></path>
-                                <path d="M20 4v16"></path>
-                            </svg>
-                        </span>
-                        <span class="menu-label">Logout</span>
-                    </button>
-                </form>
             </div>
         </aside>
 
