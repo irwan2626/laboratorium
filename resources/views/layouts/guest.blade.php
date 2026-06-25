@@ -209,6 +209,36 @@
                 background: linear-gradient(135deg, #0b3f6c, var(--primary));
             }
 
+            .install-button {
+                display: none;
+                width: 100%;
+                min-height: 44px;
+                border: 1px solid var(--secondary);
+                border-radius: var(--radius);
+                padding: 10px 20px;
+                background: linear-gradient(135deg, #ffffff, var(--surface-container-low));
+                color: var(--secondary);
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 20px;
+                cursor: pointer;
+                box-shadow: 0 8px 18px rgba(18, 32, 47, 0.08);
+            }
+
+            .install-button:hover {
+                border-color: var(--primary);
+                color: var(--primary);
+            }
+
+            .install-hint {
+                display: none;
+                margin: 10px 0 0;
+                color: var(--on-surface-variant);
+                font-size: 12px;
+                line-height: 16px;
+                text-align: center;
+            }
+
             @media (max-width: 520px) {
                 .login-page {
                     align-items: start;
@@ -258,6 +288,10 @@
                     width: 100%;
                 }
 
+                .install-button {
+                    width: 100%;
+                }
+
                 .login-card input[type="email"],
                 .login-card input[type="password"] {
                     min-height: 44px;
@@ -280,9 +314,59 @@
         </main>
 
         <script>
+            let deferredInstallPrompt = null;
+            const installButton = document.getElementById('install-app-button');
+            const installHint = document.getElementById('install-app-hint');
+
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function () {
                     navigator.serviceWorker.register('/sw.js');
+                });
+            }
+
+            window.addEventListener('beforeinstallprompt', function (event) {
+                event.preventDefault();
+                deferredInstallPrompt = event;
+
+                if (installButton) {
+                    installButton.style.display = 'inline-flex';
+                }
+
+                if (installHint) {
+                    installHint.style.display = 'block';
+                }
+            });
+
+            window.addEventListener('appinstalled', function () {
+                deferredInstallPrompt = null;
+
+                if (installButton) {
+                    installButton.style.display = 'none';
+                }
+
+                if (installHint) {
+                    installHint.style.display = 'none';
+                }
+            });
+
+            if (installButton) {
+                installButton.addEventListener('click', async function () {
+                    if (! deferredInstallPrompt) {
+                        return;
+                    }
+
+                    deferredInstallPrompt.prompt();
+                    const choiceResult = await deferredInstallPrompt.userChoice;
+
+                    if (choiceResult.outcome === 'accepted') {
+                        installButton.style.display = 'none';
+
+                        if (installHint) {
+                            installHint.style.display = 'none';
+                        }
+                    }
+
+                    deferredInstallPrompt = null;
                 });
             }
         </script>

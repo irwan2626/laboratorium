@@ -37,5 +37,13 @@
                 {{ __('Log in') }}
             </button>
         </div>
+
+        <button id="install-app-button" class="install-button" type="button">
+            Install Aplikasi
+        </button>
+
+        <p id="install-app-hint" class="install-hint">
+            Aplikasi bisa di-install di Android lewat tombol ini.
+        </p>
     </form>
 </x-guest-layout>
