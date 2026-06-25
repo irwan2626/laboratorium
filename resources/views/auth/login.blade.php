@@ -39,11 +39,11 @@
         </div>
 
         <button id="install-app-button" class="install-button" type="button">
-            Install Aplikasi
+            Install Aplikasi Android
         </button>
 
         <p id="install-app-hint" class="install-hint">
-            Aplikasi bisa di-install di Android lewat tombol ini.
+            Tombol ini muncul di Android jika browser mendukung instal aplikasi.
         </p>
     </form>
 </x-guest-layout>
