@@ -92,38 +92,6 @@
             gap: 12px;
         }
 
-        .logout-top-right {
-            display: inline-flex;
-            flex: 0 0 auto;
-            margin-left: auto;
-            border: 1px solid var(--outline-variant);
-            border-radius: var(--radius);
-            padding: 10px 12px;
-            background: var(--surface-container-lowest);
-            color: var(--error);
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .logout-top-right:hover {
-            background: var(--error-container);
-            color: var(--error);
-        }
-
-        .logout-top-right .logout-button {
-            width: auto;
-            padding: 0;
-            border: 0;
-            background: transparent;
-            color: inherit;
-        }
-
-        .logout-top-right .menu-label {
-            font-size: 13px;
-            line-height: 16px;
-        }
-
         .mobile-menu-button {
             display: none;
             width: 42px;
@@ -289,8 +257,7 @@
         }
 
         .logout-form {
-            display: none;
-            margin-top: auto;
+            margin-top: 0;
         }
 
         .content {
@@ -725,10 +692,6 @@
                 display: none;
             }
 
-            .logout-top-right {
-                display: none;
-            }
-
             .mobile-menu-panel {
                 position: fixed;
                 left: 12px;
@@ -899,19 +862,6 @@
                     <label class="mobile-menu-button" for="asisten-menu-toggle" aria-label="Buka menu">
                         <span></span>
                     </label>
-                    <form class="logout-top-right" method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button class="logout-button" type="submit">
-                            <span class="nav-item-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M10 17l5-5-5-5"></path>
-                                    <path d="M15 12H4"></path>
-                                    <path d="M20 4v16"></path>
-                                </svg>
-                            </span>
-                            <span class="menu-label">Logout</span>
-                        </button>
-                    </form>
                 </div>
                 <p>Panel pendataan kerusakan alat</p>
                 <div class="account-box">
