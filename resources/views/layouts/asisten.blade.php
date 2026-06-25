@@ -92,6 +92,24 @@
             gap: 12px;
         }
 
+        .account-avatar {
+            display: none;
+            width: 42px;
+            height: 42px;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--outline-variant);
+            border-radius: 9999px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--on-primary);
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1;
+            text-transform: uppercase;
+            box-shadow: inset 0 -4px 0 rgba(255, 255, 255, 0.16);
+        }
+
         .mobile-menu-button {
             display: none;
             width: 42px;
@@ -679,12 +697,17 @@
                 align-items: center;
             }
 
+            .account-avatar {
+                display: inline-flex;
+            }
+
             .brand h1 {
                 font-size: 20px;
                 line-height: 28px;
             }
 
             .account-box {
+                display: none;
                 margin-top: 8px;
             }
 
@@ -859,6 +882,9 @@
             <div class="brand">
                 <div class="brand-header">
                     <h1>Asisten Laboratorium</h1>
+                    <div class="account-avatar" aria-label="Akun">
+                        {{ strtoupper(substr(auth()->user()->name ?? 'Asisten', 0, 1)) }}
+                    </div>
                     <label class="mobile-menu-button" for="asisten-menu-toggle" aria-label="Buka menu">
                         <span></span>
                     </label>
