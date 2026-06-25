@@ -142,6 +142,29 @@
             gap: 24px;
         }
 
+        .nav-item-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            flex: 0 0 auto;
+        }
+
+        .nav-item-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .menu-label {
+            display: inline-block;
+        }
+
         .brand {
             border-bottom: 1px solid var(--outline-variant);
             padding-bottom: 18px;
@@ -640,7 +663,7 @@
             .sidebar {
                 position: static;
                 border-right: 0;
-                border-bottom: 1px solid var(--outline-variant);
+                border-bottom: 0;
                 padding: 16px;
                 gap: 14px;
             }
@@ -662,12 +685,23 @@
             }
 
             .mobile-menu-button {
-                display: inline-flex;
+                display: none;
             }
 
             .mobile-menu-panel {
-                display: none;
-                gap: 12px;
+                position: fixed;
+                left: 12px;
+                right: 12px;
+                bottom: 12px;
+                z-index: 50;
+                display: grid;
+                gap: 10px;
+                padding: 12px;
+                border: 1px solid var(--outline-variant);
+                border-radius: 18px;
+                background: rgba(255, 255, 255, 0.98);
+                box-shadow: 0 14px 30px rgba(17, 28, 45, 0.14);
+                backdrop-filter: blur(12px);
             }
 
             .nav-toggle:checked + .sidebar .mobile-menu-panel {
@@ -675,14 +709,38 @@
             }
 
             .menu {
-                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
                 gap: 8px;
                 overflow-x: visible;
                 padding-bottom: 0;
             }
 
-            .menu a {
+            .menu a,
+            .logout-button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                min-height: 72px;
+                padding: 10px 8px;
+                text-align: center;
                 white-space: normal;
+                flex-direction: column;
+            }
+
+            .menu a.active::before {
+                top: auto;
+                right: 12px;
+                bottom: 8px;
+                left: 12px;
+                width: auto;
+                height: 3px;
+                border-radius: 9999px;
+            }
+
+            .menu-label {
+                font-size: 12px;
+                line-height: 16px;
             }
 
             .logout-form {
@@ -694,7 +752,7 @@
             }
 
             .content {
-                padding: 16px;
+                padding: 16px 16px 112px;
             }
 
             .topbar {
@@ -755,7 +813,7 @@
 
             .menu {
                 display: grid;
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
                 overflow-x: visible;
             }
 
@@ -763,6 +821,23 @@
             .logout-button {
                 width: 100%;
                 white-space: normal;
+            }
+
+            .mobile-menu-panel {
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+                padding: 10px;
+            }
+
+            .menu a,
+            .logout-button {
+                min-height: 70px;
+                padding: 8px 6px;
+            }
+
+            .menu-label {
+                font-size: 11px;
             }
 
             table {
@@ -796,14 +871,53 @@
 
             <div class="mobile-menu-panel">
                 <nav class="menu">
-                    <a href="/asisten/dashboard" class="{{ request()->is('asisten/dashboard') ? 'active' : '' }}">Dashboard</a>
-                    <a href="/scan" class="{{ request()->is('scan') ? 'active' : '' }}">Scan QR Kerusakan</a>
-                    <a href="/data-kerusakan" class="{{ request()->is('data-kerusakan') ? 'active' : '' }}">Lihat Data Kerusakan</a>
+                    <a href="/asisten/dashboard" class="{{ request()->is('asisten/dashboard') ? 'active' : '' }}">
+                        <span class="nav-item-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 10.5 12 4l8 6.5"></path>
+                                <path d="M6.5 9.5V20h11V9.5"></path>
+                                <path d="M10 20v-6h4v6"></path>
+                            </svg>
+                        </span>
+                        <span class="menu-label">Dashboard</span>
+                    </a>
+                    <a href="/scan" class="{{ request()->is('scan') ? 'active' : '' }}">
+                        <span class="nav-item-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M7 3H5a2 2 0 0 0-2 2v2"></path>
+                                <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+                                <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+                                <path d="M17 21h2a2 2 0 0 0 2-2v-2"></path>
+                                <path d="M9 9h6v6H9z"></path>
+                            </svg>
+                        </span>
+                        <span class="menu-label">Scan QR</span>
+                    </a>
+                    <a href="/data-kerusakan" class="{{ request()->is('data-kerusakan') ? 'active' : '' }}">
+                        <span class="nav-item-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 5h14v14H5z"></path>
+                                <path d="M8 9h8"></path>
+                                <path d="M8 13h8"></path>
+                                <path d="M8 17h5"></path>
+                            </svg>
+                        </span>
+                        <span class="menu-label">Data Kerusakan</span>
+                    </a>
                 </nav>
 
                 <form class="logout-form" method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button class="logout-button" type="submit">Logout</button>
+                    <button class="logout-button" type="submit">
+                        <span class="nav-item-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M10 17l5-5-5-5"></path>
+                                <path d="M15 12H4"></path>
+                                <path d="M20 4v16"></path>
+                            </svg>
+                        </span>
+                        <span class="menu-label">Logout</span>
+                    </button>
                 </form>
             </div>
         </aside>
