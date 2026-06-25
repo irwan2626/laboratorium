@@ -8,87 +8,10 @@
 @section('page_title', 'Dashboard Utama')
 
 @section('content')
-    <section class="dashboard-hero">
-        <div class="hero-card">
-            <span class="hero-eyebrow">Dashboard Admin</span>
-            <h2 class="hero-title">Monitoring Laboratorium yang lebih cepat dan rapi</h2>
-            <p class="hero-text">
-                Pantau kondisi laboratorium, inventaris peralatan, dan status kerusakan dari satu tampilan yang ringkas dan nyaman dibaca di desktop maupun mobile.
-            </p>
-
-            <div class="hero-metrics">
-                <div class="hero-metric">
-                    <span>Total Laboratorium</span>
-                    <strong>{{ $totalLaboratorium }}</strong>
-                </div>
-
-                <div class="hero-metric">
-                    <span>Total Peralatan</span>
-                    <strong>{{ $totalPeralatan }}</strong>
-                </div>
-
-                <div class="hero-metric">
-                    <span>Total Kerusakan</span>
-                    <strong>{{ $totalKerusakan }}</strong>
-                </div>
-            </div>
-        </div>
-
-        <div class="hero-side">
-            <div class="quick-actions">
-                <h3>Aksi Cepat</h3>
-
-                <div class="quick-grid">
-                    <a class="quick-card" href="{{ route('admin.laboratorium.index') }}">
-                        <span class="quick-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M4 7h16"></path>
-                                <path d="M6 7v12h12V7"></path>
-                                <path d="M9 11h6"></path>
-                                <path d="M9 15h6"></path>
-                            </svg>
-                        </span>
-                        <strong>Kelola Laboratorium</strong>
-                        <span>Buka daftar laboratorium dan perbarui data utama.</span>
-                    </a>
-
-                    <a class="quick-card" href="{{ route('users.index') }}">
-                        <span class="quick-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z"></path>
-                                <path d="M4 20a8 8 0 0 1 16 0"></path>
-                            </svg>
-                        </span>
-                        <strong>Kelola User</strong>
-                        <span>Atur akun admin, asisten, dan hak akses pengguna.</span>
-                    </a>
-
-                    <a class="quick-card" href="#table-kerusakan">
-                        <span class="quick-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M5 5h14v14H5z"></path>
-                                <path d="M8 9h8"></path>
-                                <path d="M8 13h8"></path>
-                            </svg>
-                        </span>
-                        <strong>Lihat Kerusakan</strong>
-                        <span>Langsung fokus ke data kerusakan terbaru.</span>
-                    </a>
-
-                    <a class="quick-card" href="#table-users">
-                        <span class="quick-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M4 6h16"></path>
-                                <path d="M4 12h16"></path>
-                                <path d="M4 18h16"></path>
-                            </svg>
-                        </span>
-                        <strong>Daftar User</strong>
-                        <span>Periksa akun yang sudah terdaftar di sistem.</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+    <section class="topbar">
+        <span class="eyebrow">Dashboard Admin</span>
+        <h2>Monitoring Laboratorium</h2>
+        <p>Ringkasan data laboratorium, peralatan, dan status kerusakan perangkat.</p>
     </section>
 
     <section class="stats-grid">

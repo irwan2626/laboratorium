@@ -209,15 +209,11 @@
             height: 100vh;
             max-width: 1440px;
             margin: 0 auto;
-            padding: 28px 24px 32px;
+            padding: 32px 24px;
             overflow-y: auto;
             overflow-x: hidden;
             -ms-overflow-style: none;
             scrollbar-width: none;
-            background:
-                radial-gradient(circle at top right, rgba(15, 76, 129, 0.08), transparent 28%),
-                radial-gradient(circle at bottom left, rgba(37, 115, 111, 0.08), transparent 24%),
-                linear-gradient(180deg, rgba(249, 249, 255, 0.82), rgba(249, 249, 255, 1));
         }
 
         .topbar,
@@ -231,208 +227,6 @@
 
         .topbar {
             margin-bottom: 24px;
-            padding: 22px 24px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .topbar::after {
-            content: "";
-            position: absolute;
-            inset: 0 0 auto auto;
-            width: 220px;
-            height: 220px;
-            transform: translate(35%, -45%);
-            border-radius: 9999px;
-            background: radial-gradient(circle, rgba(15, 76, 129, 0.15), transparent 68%);
-            pointer-events: none;
-        }
-
-        .dashboard-hero {
-            display: grid;
-            grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.9fr);
-            gap: 18px;
-            align-items: stretch;
-            margin-bottom: 24px;
-        }
-
-        .hero-card {
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--outline-variant);
-            border-radius: var(--radius);
-            background: linear-gradient(135deg, #0f4c81 0%, #16608f 55%, #25736f 100%);
-            color: var(--on-primary);
-            box-shadow: var(--shadow);
-            padding: 26px;
-        }
-
-        .hero-card::before,
-        .hero-card::after {
-            content: "";
-            position: absolute;
-            border-radius: 9999px;
-            pointer-events: none;
-        }
-
-        .hero-card::before {
-            top: -60px;
-            right: -20px;
-            width: 160px;
-            height: 160px;
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .hero-card::after {
-            bottom: -70px;
-            right: 110px;
-            width: 180px;
-            height: 180px;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .hero-card > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            padding: 7px 12px;
-            border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.14);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-
-        .hero-title {
-            margin: 0;
-            font-size: 30px;
-            font-weight: 700;
-            line-height: 38px;
-            letter-spacing: 0;
-        }
-
-        .hero-text {
-            max-width: 640px;
-            margin: 10px 0 0;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 15px;
-            line-height: 22px;
-        }
-
-        .hero-metrics {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
-            margin-top: 22px;
-        }
-
-        .hero-metric {
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: var(--radius);
-            padding: 14px 14px 12px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .hero-metric span {
-            display: block;
-            color: rgba(255, 255, 255, 0.78);
-            font-size: 12px;
-            font-weight: 600;
-            line-height: 16px;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
-        .hero-metric strong {
-            display: block;
-            margin-top: 8px;
-            font-size: 28px;
-            font-weight: 700;
-            line-height: 32px;
-        }
-
-        .hero-side {
-            display: grid;
-            gap: 18px;
-        }
-
-        .quick-actions {
-            display: grid;
-            gap: 14px;
-        }
-
-        .quick-actions h3 {
-            margin: 0;
-            color: var(--primary);
-            font-size: 18px;
-            font-weight: 600;
-            line-height: 26px;
-        }
-
-        .quick-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .quick-card {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            min-height: 100px;
-            padding: 16px;
-            border: 1px solid var(--outline-variant);
-            border-radius: var(--radius);
-            background: var(--surface-container-lowest);
-            box-shadow: var(--shadow);
-            text-decoration: none;
-            color: var(--on-surface);
-        }
-
-        .quick-card strong {
-            color: var(--primary);
-            font-size: 15px;
-            line-height: 22px;
-        }
-
-        .quick-card span {
-            color: var(--on-surface-variant);
-            font-size: 13px;
-            line-height: 18px;
-        }
-
-        .quick-card:hover {
-            border-color: rgba(15, 76, 129, 0.22);
-            transform: translateY(-1px);
-        }
-
-        .quick-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            border-radius: 9999px;
-            background: var(--surface-container-low);
-            color: var(--primary);
-        }
-
-        .quick-icon svg {
-            width: 20px;
-            height: 20px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
         }
 
         .topbar h2 {
@@ -474,12 +268,6 @@
             grid-column: span 3;
             overflow: hidden;
             padding: 20px 20px 18px 24px;
-            transition: transform 0.18s ease, box-shadow 0.18s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 22px rgba(17, 28, 45, 0.08);
         }
 
         .stat-card::before {
@@ -568,7 +356,7 @@
             height: 100%;
             min-width: 8px;
             border-radius: 1rem;
-            background: linear-gradient(90deg, var(--primary), #176099);
+            background: var(--primary);
         }
 
         .action-row {
@@ -607,7 +395,6 @@
         }
 
         .tab-button.active {
-            box-shadow: 0 10px 18px rgba(15, 76, 129, 0.18);
         }
 
         .btn {
@@ -701,7 +488,6 @@
             border: 1px solid var(--outline-variant);
             border-radius: var(--radius);
             -webkit-overflow-scrolling: touch;
-            background: var(--surface-container-lowest);
         }
 
         table {
@@ -856,33 +642,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .dashboard-hero {
-                grid-template-columns: 1fr;
-                gap: 14px;
-            }
-
-            .hero-card {
-                padding: 20px;
-            }
-
-            .hero-title {
-                font-size: 24px;
-                line-height: 32px;
-            }
-
-            .hero-text {
-                font-size: 14px;
-                line-height: 20px;
-            }
-
-            .hero-metrics {
-                grid-template-columns: 1fr;
-            }
-
-            .quick-grid {
-                grid-template-columns: 1fr;
-            }
-
             .stat-card {
                 grid-column: auto;
             }
@@ -906,45 +665,6 @@
             .content {
                 padding-left: 12px;
                 padding-right: 12px;
-            }
-
-            .topbar,
-            .panel,
-            .hero-card,
-            .quick-card,
-            .stat-card {
-                border-radius: 0.75rem;
-            }
-
-            .topbar {
-                padding: 16px;
-            }
-
-            .panel {
-                padding: 16px;
-            }
-
-            .hero-card {
-                padding: 18px 16px;
-            }
-
-            .hero-title {
-                font-size: 22px;
-                line-height: 30px;
-            }
-
-            .hero-metric strong {
-                font-size: 24px;
-                line-height: 28px;
-            }
-
-            .quick-card {
-                min-height: 92px;
-                padding: 14px;
-            }
-
-            .quick-grid {
-                gap: 10px;
             }
 
             table {
