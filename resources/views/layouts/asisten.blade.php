@@ -93,7 +93,7 @@
         }
 
         .logout-top-right {
-            display: none;
+            display: inline-flex;
             flex: 0 0 auto;
             margin-left: auto;
             border: 1px solid var(--outline-variant);
@@ -117,6 +117,11 @@
             border: 0;
             background: transparent;
             color: inherit;
+        }
+
+        .logout-top-right .menu-label {
+            font-size: 13px;
+            line-height: 16px;
         }
 
         .mobile-menu-button {
@@ -284,6 +289,7 @@
         }
 
         .logout-form {
+            display: none;
             margin-top: auto;
         }
 
@@ -720,11 +726,7 @@
             }
 
             .logout-top-right {
-                display: inline-flex;
-            }
-
-            .logout-top-right .logout-button {
-                min-height: 0;
+                display: none;
             }
 
             .mobile-menu-panel {
@@ -748,7 +750,7 @@
             }
 
             .menu {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-template-columns: repeat(4, minmax(0, 1fr));
                 gap: 8px;
                 overflow-x: visible;
                 padding-bottom: 0;
@@ -783,7 +785,8 @@
             }
 
             .logout-form {
-                display: none;
+                display: block;
+                margin-top: 0;
             }
 
             .content {
@@ -848,7 +851,7 @@
 
             .menu {
                 display: grid;
-                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-template-columns: repeat(4, minmax(0, 1fr));
                 overflow-x: visible;
             }
 
@@ -952,6 +955,19 @@
                         </span>
                         <span class="menu-label">Data Kerusakan</span>
                     </a>
+                    <form class="logout-form" method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="logout-button" type="submit">
+                            <span class="nav-item-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M10 17l5-5-5-5"></path>
+                                    <path d="M15 12H4"></path>
+                                    <path d="M20 4v16"></path>
+                                </svg>
+                            </span>
+                            <span class="menu-label">Logout</span>
+                        </button>
+                    </form>
                 </nav>
 
             </div>
