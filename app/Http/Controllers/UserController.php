@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -104,20 +103,6 @@ class UserController extends Controller
         $user->update($data);
 
         return redirect()->route('users.index');
-    }
-
-    public function sendPasswordResetLink(User $user)
-    {
-        $status = Password::sendResetLink([
-            'email' => $user->email,
-        ]);
-
-        return back()->with(
-            'status',
-            $status === Password::RESET_LINK_SENT
-                ? 'Link lupa password berhasil dikirim ke '.$user->email.'.'
-                : 'Link lupa password gagal dikirim. Periksa konfigurasi email aplikasi.'
-        );
     }
 
     /**
