@@ -11,6 +11,130 @@ use App\Http\Controllers\LaboratoriumController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\KategoriKerusakanController;
 
+Route::get('/manifest.webmanifest', function () {
+        return response()->json([
+                'name' => 'Pendataan Laboratorium',
+                'short_name' => 'Pendataan Lab',
+                'start_url' => '/dashboard',
+                'scope' => '/',
+                'display' => 'standalone',
+                'background_color' => '#f9f9ff',
+                'theme_color' => '#00355f',
+                'description' => 'Aplikasi pendataan laboratorium, kerusakan alat, dan manajemen pengguna.',
+                'icons' => [
+                        [
+                                'src' => '/pwa/icon-192.svg',
+                                'sizes' => '192x192',
+                                'type' => 'image/svg+xml',
+                                'purpose' => 'any',
+                        ],
+                        [
+                                'src' => '/pwa/icon-512.svg',
+                                'sizes' => '512x512',
+                                'type' => 'image/svg+xml',
+                                'purpose' => 'any',
+                        ],
+                ],
+        ], 200, [
+                'Content-Type' => 'application/manifest+json',
+                'Cache-Control' => 'no-cache',
+        ]);
+});
+
+Route::get('/sw.js', function () {
+        $script = <<<'JS'
+const CACHE_NAME = 'pendataan-lab-v2';
+const APP_SHELL = [
+    '/',
+    '/dashboard',
+    '/manifest.webmanifest',
+    '/pwa/icon-192.svg',
+    '/pwa/icon-512.svg'
+];
+
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))
+    );
+    self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        caches.keys().then(keys => Promise.all(
+            keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+        ))
+    );
+    self.clients.claim();
+});
+
+self.addEventListener('fetch', event => {
+    if (event.request.method !== 'GET') {
+        return;
+    }
+
+    event.respondWith(
+        fetch(event.request)
+            .then(response => {
+                const responseClone = response.clone();
+                caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
+                return response;
+            })
+            .catch(() => caches.match(event.request).then(cached => cached || caches.match('/dashboard')))
+    );
+});
+JS;
+
+        return response($script, 200, [
+                'Content-Type' => 'application/javascript',
+                'Cache-Control' => 'no-cache',
+        ]);
+});
+
+Route::get('/pwa/icon-192.svg', function () {
+        $icon = <<<'SVG'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="Pendataan Laboratorium">
+    <defs>
+        <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0%" stop-color="#0f4c81"/>
+            <stop offset="100%" stop-color="#25736f"/>
+        </linearGradient>
+    </defs>
+    <rect width="192" height="192" rx="44" fill="url(#g)"/>
+    <rect x="40" y="38" width="112" height="116" rx="22" fill="#ffffff" opacity="0.18"/>
+    <path d="M61 70h70M61 96h70M61 122h44" stroke="#ffffff" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="136" cy="122" r="10" fill="#c97724"/>
+</svg>
+SVG;
+
+        return response($icon, 200, [
+                'Content-Type' => 'image/svg+xml',
+                'Cache-Control' => 'public, max-age=86400',
+        ]);
+});
+
+Route::get('/pwa/icon-512.svg', function () {
+        $icon = <<<'SVG'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pendataan Laboratorium">
+    <defs>
+        <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0%" stop-color="#0f4c81"/>
+            <stop offset="100%" stop-color="#25736f"/>
+        </linearGradient>
+    </defs>
+    <rect width="512" height="512" rx="118" fill="url(#g)"/>
+    <rect x="106" y="102" width="300" height="308" rx="58" fill="#ffffff" opacity="0.18"/>
+    <path d="M158 176h196M158 254h196M158 332h126" stroke="#ffffff" stroke-width="28" stroke-linecap="round"/>
+    <circle cx="340" cy="332" r="24" fill="#c97724"/>
+</svg>
+SVG;
+
+        return response($icon, 200, [
+                'Content-Type' => 'image/svg+xml',
+                'Cache-Control' => 'public, max-age=86400',
+        ]);
+});
+
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/dashboard', [DashboardController::class, 'redirectByRole'])

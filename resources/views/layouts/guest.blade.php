@@ -5,13 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#0f4c81">
+        <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
         <title>{{ config('app.name', 'Pendataan Laboratorium') }}</title>
 
         <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
-        <link rel="apple-touch-icon" href="{{ asset('icons/icon-192.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('pwa/icon-192.svg') }}">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
@@ -65,10 +66,9 @@
                 -ms-overflow-style: none;
                 scrollbar-width: none;
                 background:
-                    linear-gradient(135deg, rgba(245, 247, 251, 0.9), rgba(238, 246, 244, 0.74)),
-                    url("{{ asset('images/login-bg.jpg') }}");
-                background-size: cover;
-                background-position: center;
+                    radial-gradient(circle at top right, rgba(15, 76, 129, 0.14), transparent 24%),
+                    radial-gradient(circle at bottom left, rgba(37, 115, 111, 0.16), transparent 20%),
+                    linear-gradient(135deg, rgba(245, 247, 251, 0.94), rgba(238, 246, 244, 0.9));
             }
 
             .login-card {
@@ -136,14 +136,31 @@
             }
 
             .login-card label {
+                display: block;
                 color: var(--primary);
                 font-size: 14px;
                 font-weight: 600;
                 line-height: 20px;
             }
 
+            .login-card form {
+                display: grid;
+                gap: 16px;
+            }
+
+            .login-card form > div {
+                display: grid;
+                gap: 8px;
+            }
+
+            .login-card form > div.block.mt-4 {
+                gap: 0;
+            }
+
             .login-card input[type="email"],
             .login-card input[type="password"] {
+                display: block;
+                width: 100%;
                 min-height: 46px;
                 border-color: transparent;
                 border-radius: var(--radius);
@@ -162,6 +179,7 @@
             }
 
             .login-card input[type="checkbox"] {
+                width: auto;
                 border-radius: 4px;
                 color: var(--primary);
             }
@@ -176,7 +194,7 @@
                 align-items: center;
                 justify-content: space-between;
                 gap: 12px;
-                margin-top: 22px;
+                margin-top: 6px;
             }
 
             .login-link {
@@ -274,6 +292,10 @@
                 .login-brand p {
                     font-size: 13px;
                     line-height: 18px;
+                }
+
+                .login-card form {
+                    gap: 14px;
                 }
 
                 .login-actions {
