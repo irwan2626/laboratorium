@@ -8,11 +8,6 @@
 @section('page_title', 'Dashboard Utama')
 
 @section('content')
-    <section class="topbar">
-        <span class="eyebrow">Dashboard Admin</span>
-        <h2>Monitoring Laboratorium</h2>
-        <p>Ringkasan data laboratorium, peralatan, dan status kerusakan perangkat.</p>
-    </section>
 
     <section class="stats-grid">
         <div class="stat-card">
@@ -254,23 +249,20 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td><span class="status-pill">{{ $user->role }}</span></td>
+                        <td>{{ $user->role }}</td>
                         <td>{{ $user->lokasi_lab ?? '-' }}</td>
                         <td>
-                            <div class="table-actions">
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-outline">
-                                    Edit
-                                </a>
+                            <a href="{{ route('users.edit', $user->id) }}" class="btn">
+                                Edit
+                            </a>
 
-                                <form class="inline-form" action="{{ route('users.destroy', $user->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
+                            <form class="inline-form" action="{{ route('users.password-reset', $user) }}" method="POST">
+                                @csrf
 
-                                    <button class="danger-button" type="submit">
-                                        Hapus
-                                    </button>
-                                </form>
-                            </div>
+                                <button class="btn" type="submit">
+                                    Lupa Password
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @empty

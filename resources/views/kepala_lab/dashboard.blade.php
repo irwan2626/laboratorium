@@ -709,11 +709,6 @@
         </aside>
 
         <main class="content">
-            <section class="topbar">
-                <span class="eyebrow">Dashboard Kepala Lab</span>
-                <h2>Evaluasi Kerusakan Laboratorium</h2>
-                <p>Ringkasan kondisi perangkat, tren kerusakan, dan laporan per laboratorium.</p>
-            </section>
 
             <section class="stats-grid">
                 <div class="stat-card">
