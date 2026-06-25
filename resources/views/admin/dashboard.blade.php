@@ -249,20 +249,23 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->role }}</td>
+                        <td><span class="status-pill">{{ $user->role }}</span></td>
                         <td>{{ $user->lokasi_lab ?? '-' }}</td>
                         <td>
-                            <a href="{{ route('users.edit', $user->id) }}" class="btn">
-                                Edit
-                            </a>
+                            <div class="table-actions">
+                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-outline">
+                                    Edit
+                                </a>
 
-                            <form class="inline-form" action="{{ route('users.password-reset', $user) }}" method="POST">
-                                @csrf
+                                <form class="inline-form" action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
 
-                                <button class="btn" type="submit">
-                                    Lupa Password
-                                </button>
-                            </form>
+                                    <button class="danger-button" type="submit">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @empty
