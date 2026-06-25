@@ -206,35 +206,56 @@
             @media (max-width: 520px) {
                 .login-page {
                     align-items: start;
-                    padding: 42px 14px 24px;
+                    padding: 20px 12px 16px;
                 }
 
                 .login-card {
-                    padding: 26px 20px 22px;
+                    width: 100%;
+                    max-width: 100%;
+                    padding: 22px 16px 18px;
+                    border-radius: 0.75rem;
                 }
 
                 .login-brand {
                     grid-template-columns: 1fr;
-                    gap: 12px;
+                    gap: 10px;
+                    margin-bottom: 22px;
+                    padding-bottom: 18px;
                     text-align: center;
                 }
 
                 .brand-mark {
+                    width: 48px;
+                    height: 48px;
                     margin: 0 auto;
                 }
 
                 .login-brand h1 {
-                    font-size: 20px;
-                    line-height: 28px;
+                    font-size: 18px;
+                    line-height: 24px;
+                }
+
+                .login-brand p {
+                    font-size: 13px;
+                    line-height: 18px;
                 }
 
                 .login-actions {
                     align-items: stretch;
                     flex-direction: column;
+                    gap: 10px;
+                    margin-top: 18px;
                 }
 
+                .login-link,
                 .login-button {
                     width: 100%;
+                }
+
+                .login-card input[type="email"],
+                .login-card input[type="password"] {
+                    min-height: 44px;
+                    font-size: 16px;
                 }
             }
         </style>
