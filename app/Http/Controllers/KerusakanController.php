@@ -198,15 +198,4 @@ class KerusakanController extends Controller
         return view('admin.laporan.index', compact('kerusakan'));
     }
 
-
-    public function laboratorium($id)
-    {
-        $laboratorium = Laboratorium::find($id);
-
-        $kerusakan = Kerusakan::where('laboratorium_id', $id)
-            ->latest()
-            ->get();
-
-        return view('admin.laporan.index', compact('kerusakan', 'laboratorium'));
-    }
 }
