@@ -175,4 +175,6 @@ Route::middleware(['auth', 'role:kepala_lab'])->group(function () {
     Route::get('/kepala_lab/laporan/export-pdf', [KepalaLabController::class, 'exportPdf'])->name('kepala_lab.laporan.pdf');
 });
 
+Route::middleware('laboratorium/{id}/kerusakan', [KerusakanController::class, 'laboratorium'])->name('laboratorium.kerusakan');
+
 require __DIR__.'/auth.php';

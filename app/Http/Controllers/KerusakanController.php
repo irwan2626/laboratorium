@@ -6,6 +6,7 @@ use App\Models\Peralatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use App\Models\Laboratorium;
 
 
 class KerusakanController extends Controller
@@ -195,5 +196,17 @@ class KerusakanController extends Controller
             ->get();
 
         return view('admin.laporan.index', compact('kerusakan'));
+    }
+
+
+    public function laboratorium($id)
+    {
+        $laboratorium = Laboratorium::find($id);
+
+        $kerusakan = Kerusakan::where('laboratorium_id', $id)
+            ->latest()
+            ->get();
+
+        return view('admin.laporan.index', compact('kerusakan', 'laboratorium'));
     }
 }
