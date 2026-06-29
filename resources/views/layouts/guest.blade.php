@@ -171,6 +171,43 @@
                 box-shadow: inset 0 0 0 1px var(--outline-variant);
             }
 
+            .password-field {
+                position: relative;
+            }
+
+            .password-field input[type="password"],
+            .password-field input[type="text"] {
+                padding-right: 48px;
+            }
+
+            .password-toggle {
+                position: absolute;
+                top: 50%;
+                right: 8px;
+                display: grid;
+                width: 34px;
+                height: 34px;
+                place-items: center;
+                border: 0;
+                border-radius: var(--radius);
+                background: transparent;
+                color: var(--on-surface-variant);
+                cursor: pointer;
+                transform: translateY(-50%);
+            }
+
+            .password-toggle:hover,
+            .password-toggle:focus {
+                background: var(--surface-container);
+                color: var(--primary);
+                outline: none;
+            }
+
+            .password-eye {
+                font-size: 18px;
+                line-height: 1;
+            }
+
             .login-card input[type="email"]:focus,
             .login-card input[type="password"]:focus {
                 border-color: var(--primary);
@@ -391,6 +428,23 @@
                     deferredInstallPrompt = null;
                 });
             }
+
+            document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+                const input = document.getElementById(button.dataset.passwordToggle);
+
+                if (! input) {
+                    return;
+                }
+
+                button.addEventListener('click', function () {
+                    const showPassword = input.type === 'password';
+
+                    input.type = showPassword ? 'text' : 'password';
+                    button.setAttribute('aria-pressed', showPassword ? 'true' : 'false');
+                    button.setAttribute('aria-label', showPassword ? 'Sembunyikan password' : 'Tampilkan password');
+                    button.querySelector('.password-eye').textContent = showPassword ? '◉' : '👁';
+                });
+            });
         </script>
     </body>
 </html>

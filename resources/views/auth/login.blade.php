@@ -12,10 +12,20 @@
 
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-2 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <div class="password-field mt-2">
+                <x-text-input id="password" class="block w-full"
+                                type="password"
+                                name="password"
+                                required autocomplete="current-password" />
+                <button
+                    class="password-toggle"
+                    type="button"
+                    data-password-toggle="password"
+                    aria-label="Tampilkan password"
+                    aria-pressed="false">
+                    <span class="password-eye" aria-hidden="true">👁</span>
+                </button>
+            </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
