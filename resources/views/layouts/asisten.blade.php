@@ -523,6 +523,11 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        .table-scroll {
+            max-height: min(620px, calc(100vh - 260px));
+            overflow: auto;
+        }
+
         table {
             width: 100%;
             min-width: 760px;
@@ -531,6 +536,9 @@
         }
 
         th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
             background: var(--surface-container);
             color: var(--secondary);
             text-align: left;
@@ -830,6 +838,10 @@
 
             .table-wrap .table-actions .btn {
                 width: auto;
+            }
+
+            .table-scroll {
+                max-height: calc(100vh - 250px);
             }
         }
 

@@ -14,7 +14,7 @@
             <a href="/scan" class="btn btn-gold">Scan QR Kerusakan</a>
         </div>
 
-        <div class="table-wrap">
+        <div class="table-wrap table-scroll">
             <table>
                 <tr>
                     <th>No</th>
