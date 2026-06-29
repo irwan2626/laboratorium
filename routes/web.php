@@ -10,6 +10,16 @@ use App\Http\Controllers\KepalaLabController;
 use App\Http\Controllers\LaboratoriumController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\KategoriKerusakanController;
+use Illuminate\Support\Facades\Storage;
+
+Route::get('/uploads/{path}', function (string $path) {
+        abort_if(str_contains($path, '..'), 404);
+        abort_unless(Storage::disk('public')->exists($path), 404);
+
+        return response()->file(Storage::disk('public')->path($path), [
+                'Cache-Control' => 'public, max-age=86400',
+        ]);
+})->where('path', '.*');
 
 Route::get('/manifest.webmanifest', function () {
         return response()->json([
