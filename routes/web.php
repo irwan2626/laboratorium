@@ -13,26 +13,8 @@ use App\Http\Controllers\KategoriKerusakanController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-Route::get('/uploads/{path}', function (string $path) {
-        $path = ltrim(rawurldecode($path), '/\\');
-
-        abort_if($path === '' || str_contains($path, '..') || str_contains($path, "\0"), 404);
-
-        $locations = [
-                Storage::disk('public')->path($path),
-                base_path('uploads/'.$path),
-                base_path('public/uploads/'.$path),
-                base_path('public/storage/'.$path),
-        ];
-
-        foreach ($locations as $location) {
-                if (File::isFile($location)) {
-                        return response()->file($location, [
-                                'Cache-Control' => 'public, max-age=86400',
-                        ]);
-                }
-        }
-
+function kerusakanPlaceholderResponse()
+{
         $placeholder = <<<'SVG'
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Foto belum tersedia">
     <rect width="240" height="180" rx="18" fill="#eef2ff"/>
@@ -46,6 +28,35 @@ SVG;
                 'Content-Type' => 'image/svg+xml',
                 'Cache-Control' => 'no-cache',
         ]);
+}
+
+Route::get('/uploads/{path}', function (string $path) {
+        $path = ltrim(rawurldecode($path), '/\\');
+
+        if ($path === '' || str_contains($path, '..') || str_contains($path, "\0")) {
+                return kerusakanPlaceholderResponse();
+        }
+
+        $locations = [
+                Storage::disk('public')->path($path),
+                base_path('uploads/'.$path),
+                base_path('public/uploads/'.$path),
+                base_path('public/storage/'.$path),
+        ];
+
+        foreach ($locations as $location) {
+                if (is_file($location) && is_readable($location)) {
+                        $mimeType = File::mimeType($location) ?: 'application/octet-stream';
+
+                        return response(File::get($location), 200, [
+                                'Content-Type' => $mimeType,
+                                'Content-Length' => File::size($location),
+                                'Cache-Control' => 'public, max-age=86400',
+                        ]);
+                }
+        }
+
+        return kerusakanPlaceholderResponse();
 })->where('path', '.*');
 
 Route::get('/manifest.webmanifest', function () {
