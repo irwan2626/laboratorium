@@ -10,14 +10,41 @@ use App\Http\Controllers\KepalaLabController;
 use App\Http\Controllers\LaboratoriumController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\KategoriKerusakanController;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 Route::get('/uploads/{path}', function (string $path) {
-        abort_if(str_contains($path, '..'), 404);
-        abort_unless(Storage::disk('public')->exists($path), 404);
+        $path = ltrim(rawurldecode($path), '/\\');
 
-        return response()->file(Storage::disk('public')->path($path), [
-                'Cache-Control' => 'public, max-age=86400',
+        abort_if($path === '' || str_contains($path, '..') || str_contains($path, "\0"), 404);
+
+        $locations = [
+                Storage::disk('public')->path($path),
+                base_path('uploads/'.$path),
+                base_path('public/uploads/'.$path),
+                base_path('public/storage/'.$path),
+        ];
+
+        foreach ($locations as $location) {
+                if (File::isFile($location)) {
+                        return response()->file($location, [
+                                'Cache-Control' => 'public, max-age=86400',
+                        ]);
+                }
+        }
+
+        $placeholder = <<<'SVG'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Foto belum tersedia">
+    <rect width="240" height="180" rx="18" fill="#eef2ff"/>
+    <path d="M52 128l40-42 27 28 18-18 51 52H52z" fill="#c7d2fe"/>
+    <circle cx="159" cy="65" r="20" fill="#93c5fd"/>
+    <text x="120" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#334155">Foto tidak ditemukan</text>
+</svg>
+SVG;
+
+        return response($placeholder, 200, [
+                'Content-Type' => 'image/svg+xml',
+                'Cache-Control' => 'no-cache',
         ]);
 })->where('path', '.*');
 

@@ -493,10 +493,13 @@
         }
 
         .table-actions .btn {
+            width: auto;
+            min-width: 68px;
             min-height: 34px;
             padding: 6px 10px;
             font-size: 12px;
             line-height: 16px;
+            white-space: nowrap;
         }
 
         .inline-form {
@@ -545,7 +548,7 @@
             vertical-align: top;
             font-size: 14px;
             line-height: 20px;
-            overflow-wrap: anywhere;
+            overflow-wrap: break-word;
         }
 
         tr:nth-child(even) td {
@@ -815,10 +818,18 @@
             }
 
             .btn,
-            .table-actions .btn,
             .inline-form,
             .inline-form .btn {
                 width: 100%;
+            }
+
+            .table-wrap .table-actions {
+                align-items: flex-start;
+                min-width: 76px;
+            }
+
+            .table-wrap .table-actions .btn {
+                width: auto;
             }
         }
 
