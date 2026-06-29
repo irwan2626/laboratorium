@@ -39,8 +39,7 @@
                 <input
                     type="text"
                     name="nama_barang"
-                    autocomplete="off"
-                    value=""
+                    value="{{ old('nama_barang', $peralatan->nama_barang ?? '') }}"
                     required>
             </div>
 
@@ -51,10 +50,10 @@
                     name="jenis_kerusakan"
                     required>
                     <option value="">Pilih jenis kerusakan</option>
-                    <option value="Ringan">Kerusakan Ringan</option>
-                    <option value="Sedang">Kerusakan Sedang</option>
-                    <option value="Berat">Kerusakan Berat</option>
-                    <option value="Tidak Bisa Digunakan">Tidak Bisa Digunakan</option>
+                    <option value="Ringan" @selected(old('jenis_kerusakan') === 'Ringan')>Kerusakan Ringan</option>
+                    <option value="Sedang" @selected(old('jenis_kerusakan') === 'Sedang')>Kerusakan Sedang</option>
+                    <option value="Berat" @selected(old('jenis_kerusakan') === 'Berat')>Kerusakan Berat</option>
+                    <option value="Tidak Bisa Digunakan" @selected(old('jenis_kerusakan') === 'Tidak Bisa Digunakan')>Tidak Bisa Digunakan</option>
                 </select>
             </div>
 
@@ -62,8 +61,7 @@
                 <label>Deskripsi</label>
 
                 <textarea
-                    name="deskripsi"
-                    autocomplete="off"></textarea>
+                    name="deskripsi">{{ old('deskripsi') }}</textarea>
             </div>
 
             <div class="mb-3">
@@ -86,15 +84,3 @@
         </form>
     </section>
 @endsection
-
-@push('scripts')
-    <script>
-        sessionStorage.removeItem(@json($requestKey));
-
-        document.querySelectorAll('input:not([type="hidden"]):not([readonly]), textarea').forEach((field) => {
-            if (field.type !== 'file') {
-                field.setAttribute('autocomplete', 'off');
-            }
-        });
-    </script>
-@endpush

@@ -653,107 +653,6 @@
             border: 1px solid var(--outline-variant);
         }
 
-        .scan-modal[hidden] {
-            display: none;
-        }
-
-        .scan-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 80;
-            display: grid;
-            place-items: center;
-            padding: 20px;
-        }
-
-        .scan-modal-backdrop {
-            position: absolute;
-            inset: 0;
-            background: rgba(7, 22, 37, 0.5);
-        }
-
-        .scan-modal-card {
-            position: relative;
-            z-index: 1;
-            width: min(720px, 100%);
-            max-height: min(720px, calc(100vh - 40px));
-            overflow: auto;
-            border: 1px solid var(--outline-variant);
-            border-radius: var(--radius);
-            background: var(--surface-container-lowest);
-            padding: 22px;
-            box-shadow: var(--shadow);
-        }
-
-        .scan-modal-head {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-
-        .modal-close {
-            width: 36px;
-            height: 36px;
-            border: 1px solid var(--outline-variant);
-            border-radius: 9999px;
-            background: var(--surface-container);
-            color: var(--secondary);
-            cursor: pointer;
-            font-size: 18px;
-            line-height: 1;
-        }
-
-        .modal-photo,
-        .detail-photo {
-            margin-bottom: 18px;
-        }
-
-        .modal-photo img,
-        .detail-photo img {
-            width: 100%;
-            max-height: 340px;
-            object-fit: cover;
-            border: 1px solid var(--outline-variant);
-            border-radius: var(--radius);
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-            margin: 0;
-        }
-
-        .detail-grid > div {
-            border: 1px solid var(--outline-variant);
-            border-radius: var(--radius);
-            background: var(--surface-container-low);
-            padding: 12px;
-        }
-
-        .detail-grid dt {
-            margin-bottom: 6px;
-            color: var(--on-surface-variant);
-            font-size: 12px;
-            font-weight: 600;
-            line-height: 16px;
-            text-transform: uppercase;
-        }
-
-        .detail-grid dd {
-            margin: 0;
-            color: var(--on-surface);
-            font-size: 14px;
-            line-height: 20px;
-            overflow-wrap: break-word;
-        }
-
-        .detail-full {
-            grid-column: 1 / -1;
-        }
-
         .muted {
             color: var(--on-surface-variant);
         }
@@ -959,17 +858,6 @@
                 white-space: normal;
             }
 
-            .scan-modal {
-                padding: 12px;
-            }
-
-            .scan-modal-card {
-                padding: 16px;
-            }
-
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
 
             .mobile-menu-panel {
                 left: 10px;

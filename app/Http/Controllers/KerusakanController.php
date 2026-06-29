@@ -33,43 +33,11 @@ class KerusakanController extends Controller
     public function create($kode)
     {
         $peralatan = Peralatan::where('kode_barang', $kode)->first();
-        $requestKey = 'kerusakan_input_'.$kode;
 
         return view(
             'asisten.create',
-            compact('kode', 'peralatan', 'requestKey')
+            compact('kode', 'peralatan')
         );
-    }
-
-    public function checkByKode(string $kode)
-    {
-        $kerusakan = Kerusakan::with(['peralatan', 'user'])
-            ->whereHas('peralatan', fn ($query) => $query->where('kode_barang', $kode))
-            ->latest()
-            ->first();
-
-        if (! $kerusakan) {
-            return response()->json([
-                'exists' => false,
-                'create_url' => url('/kerusakan/create/'.rawurlencode($kode)),
-            ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
-        }
-
-        return response()->json([
-            'exists' => true,
-            'create_url' => url('/kerusakan/create/'.rawurlencode($kode)),
-            'detail_url' => url('/kerusakan/'.$kerusakan->id),
-            'kerusakan' => [
-                'nama_peralatan' => $kerusakan->peralatan->nama_barang ?? '-',
-                'kode_peralatan' => $kerusakan->peralatan->kode_barang ?? $kode,
-                'laboratorium' => $kerusakan->user->lokasi_lab ?? '-',
-                'tanggal' => $kerusakan->tanggal,
-                'kategori' => $kerusakan->jenis_kerusakan,
-                'status' => $kerusakan->status,
-                'deskripsi' => $kerusakan->deskripsi ?: '-',
-                'foto_url' => $kerusakan->foto ? Storage::disk('public')->url($kerusakan->foto) : null,
-            ],
-        ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     }
 
     public function store(Request $request)
@@ -155,13 +123,6 @@ class KerusakanController extends Controller
             'asisten.edit-kerusakan',
             compact('kerusakan')
         );
-    }
-
-    public function show(Kerusakan $kerusakan)
-    {
-        $kerusakan->load(['peralatan', 'user']);
-
-        return view('asisten.detail-kerusakan', compact('kerusakan'));
     }
 
     public function update(Request $request, Kerusakan $kerusakan)
