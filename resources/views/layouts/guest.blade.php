@@ -158,7 +158,8 @@
             }
 
             .login-card input[type="email"],
-            .login-card input[type="password"] {
+            .login-card input[type="password"],
+            .password-field input[type="text"] {
                 display: block;
                 width: 100%;
                 min-height: 46px;
@@ -169,6 +170,16 @@
                 font-size: 14px;
                 line-height: 20px;
                 box-shadow: inset 0 0 0 1px var(--outline-variant);
+            }
+
+            .login-card input:-webkit-autofill,
+            .login-card input:-webkit-autofill:hover,
+            .login-card input:-webkit-autofill:focus {
+                -webkit-text-fill-color: var(--on-surface);
+                box-shadow:
+                    inset 0 0 0 1px var(--outline-variant),
+                    inset 0 0 0 1000px var(--surface-container-low);
+                transition: background-color 9999s ease-in-out 0s;
             }
 
             .password-field {
@@ -209,7 +220,8 @@
             }
 
             .login-card input[type="email"]:focus,
-            .login-card input[type="password"]:focus {
+            .login-card input[type="password"]:focus,
+            .password-field input[type="text"]:focus {
                 border-color: var(--primary);
                 background: var(--surface-container-lowest);
                 box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.14);
@@ -352,7 +364,8 @@
                 }
 
                 .login-card input[type="email"],
-                .login-card input[type="password"] {
+                .login-card input[type="password"],
+                .password-field input[type="text"] {
                     min-height: 44px;
                     font-size: 16px;
                 }
