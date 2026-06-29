@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kerusakan;
 use App\Models\Laboratorium;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LaboratoriumController extends Controller
@@ -12,9 +14,16 @@ class LaboratoriumController extends Controller
      */
     public function index()
     {
-        $laboratorium = Laboratorium::latest()->get();
+        $lokasiLaboratorium = User::LOKASI_LAB;
+        $kerusakanPerLaboratorium = Kerusakan::with(['peralatan', 'user'])
+            ->latest()
+            ->get()
+            ->groupBy(fn (Kerusakan $kerusakan) => $kerusakan->user->lokasi_lab ?? 'Tanpa Laboratorium');
+        $lokasiLaboratorium = collect($lokasiLaboratorium)
+            ->when($kerusakanPerLaboratorium->has('Tanpa Laboratorium'), fn ($lokasi) => $lokasi->push('Tanpa Laboratorium'))
+            ->all();
 
-        return view('admin.laboratorium.index', compact('laboratorium'));
+        return view('admin.laboratorium.index', compact('lokasiLaboratorium', 'kerusakanPerLaboratorium'));
     }
 
     /**

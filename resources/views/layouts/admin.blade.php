@@ -337,6 +337,31 @@
             line-height: 28px;
         }
 
+        .lab-panel-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .lab-panel-header h3 {
+            margin-bottom: 0;
+        }
+
+        .lab-table {
+            max-height: 520px;
+            overflow: auto;
+        }
+
+        .table-preview {
+            width: 88px;
+            height: 64px;
+            object-fit: cover;
+            border: 1px solid var(--outline-variant);
+            border-radius: var(--radius);
+        }
+
         .chart-row {
             display: grid;
             grid-template-columns: 180px 1fr 48px;
