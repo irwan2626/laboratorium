@@ -209,8 +209,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:asisten'])->group(function () {
     Route::get('/asisten/dashboard', [KerusakanController::class, 'dashboard'])->name('asisten.dashboard');
     Route::get('/scan', [KerusakanController::class, 'scan']);
+    Route::get('/kerusakan/check/{kode}', [KerusakanController::class, 'checkByKode']);
     Route::get('/kerusakan/create/{kode}', [KerusakanController::class, 'create']);
     Route::post('/kerusakan/store', [KerusakanController::class, 'store']);
+    Route::get('/kerusakan/{kerusakan}', [KerusakanController::class, 'show']);
     Route::get('/kerusakan/{kerusakan}/edit', [KerusakanController::class, 'edit']);
     Route::put('/kerusakan/{kerusakan}', [KerusakanController::class, 'update']);
     Route::delete('/kerusakan/{kerusakan}', [KerusakanController::class, 'destroy']);
