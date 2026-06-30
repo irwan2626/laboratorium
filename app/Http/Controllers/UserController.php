@@ -16,7 +16,10 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index', [
+            'users' => $users,
+            'lokasiLab' => User::LOKASI_LAB,
+        ]);
     }
 
     /**
