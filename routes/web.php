@@ -203,6 +203,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/peralatan', [PeralatanController::class, 'index'])->name('admin.peralatan.index');
     Route::get('/admin/kategori-kerusakan', [KategoriKerusakanController::class, 'index'])->name('admin.kategori-kerusakan.index');
     Route::get('/admin/laporan', [KerusakanController::class, 'laporan'])->name('admin.laporan.index');
+    Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.users.create');
     Route::resource('users', UserController::class);
 });
 

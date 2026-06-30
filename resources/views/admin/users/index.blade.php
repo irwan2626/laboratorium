@@ -7,7 +7,7 @@
 @section('content')
     <section class="panel">
         <div class="action-row">
-            <a href="{{ route('users.create') }}" class="btn btn-gold">
+            <a href="{{ route('admin.users.create') }}" class="btn btn-gold">
                 Tambah User
             </a>
         </div>
