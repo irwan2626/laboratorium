@@ -11,6 +11,16 @@ class KepalaLabController extends Controller
 {
     public function dashboard(Request $request)
     {
+        return $this->renderDashboard($request, false);
+    }
+
+    public function laporan(Request $request)
+    {
+        return $this->renderDashboard($request, true);
+    }
+
+    private function renderDashboard(Request $request, bool $reportOnly)
+    {
         $lokasiLab = User::LOKASI_LAB;
         $kerusakanQuery = $this->filteredKerusakan($request);
         $kerusakan = $kerusakanQuery->latest()->get();
@@ -30,6 +40,7 @@ class KepalaLabController extends Controller
             'kerusakan' => $kerusakan,
             'lokasiLab' => $lokasiLab,
             'filter' => $request->only(['tanggal_mulai', 'tanggal_selesai', 'laboratorium', 'status', 'kategori']),
+            'reportOnly' => $reportOnly,
         ]);
     }
 

@@ -1,4 +1,5 @@
 @php
+    $reportOnly = $reportOnly ?? false;
     $bulan = [
         1 => 'Jan',
         2 => 'Feb',
@@ -697,8 +698,8 @@
 
             <div class="mobile-menu-panel">
                 <nav class="menu">
-                    <a class="active" href="{{ route('kepala_lab.dashboard') }}">Dashboard</a>
-                    <a href="#laporan">Laporan Kerusakan</a>
+                    <a class="{{ $reportOnly ? '' : 'active' }}" href="{{ route('kepala_lab.dashboard') }}">Dashboard</a>
+                    <a class="{{ $reportOnly ? 'active' : '' }}" href="{{ route('kepala_lab.laporan') }}">Laporan Kerusakan</a>
                 </nav>
 
                 <form class="logout-form" method="POST" action="{{ route('logout') }}">
@@ -710,6 +711,7 @@
 
         <main class="content">
 
+            @unless($reportOnly)
             <section class="stats-grid">
                 <div class="stat-card">
                     <p>Total Laboratorium</p>
@@ -794,11 +796,13 @@
                     </div>
                 </div>
             </section>
+            @endunless
 
+            @if($reportOnly)
             <section id="laporan" class="panel">
                 <h3>Laporan Kerusakan Laboratorium</h3>
 
-                <form method="GET" action="{{ route('kepala_lab.dashboard') }}">
+                <form method="GET" action="{{ route('kepala_lab.laporan') }}">
                     <div class="filter-grid">
                         <div>
                             <label>Tanggal Mulai</label>
@@ -847,7 +851,7 @@
 
                     <div class="action-row">
                         <button class="btn btn-gold" type="submit">Filter</button>
-                        <a class="btn" href="{{ route('kepala_lab.dashboard') }}">Reset</a>
+                        <a class="btn" href="{{ route('kepala_lab.laporan') }}">Reset</a>
                         <a class="btn" target="_blank" href="{{ route('kepala_lab.laporan.pdf', request()->query()) }}">Export PDF</a>
                         <a class="btn" href="{{ route('kepala_lab.laporan.excel', request()->query()) }}">Export Excel</a>
                     </div>
@@ -894,6 +898,7 @@
                     </table>
                 </div>
             </section>
+            @endif
         </main>
     </div>
 </body>

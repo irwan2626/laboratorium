@@ -220,6 +220,7 @@ Route::middleware(['auth', 'role:asisten'])->group(function () {
 
 Route::middleware(['auth', 'role:kepala_lab'])->group(function () {
     Route::get('/kepala_lab/dashboard', [KepalaLabController::class, 'dashboard'])->name('kepala_lab.dashboard');
+    Route::get('/kepala_lab/laporan', [KepalaLabController::class, 'laporan'])->name('kepala_lab.laporan');
     Route::get('/kepala_lab/laporan/export-excel', [KepalaLabController::class, 'exportExcel'])->name('kepala_lab.laporan.excel');
     Route::get('/kepala_lab/laporan/export-pdf', [KepalaLabController::class, 'exportPdf'])->name('kepala_lab.laporan.pdf');
 });
