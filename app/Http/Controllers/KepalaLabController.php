@@ -65,7 +65,12 @@ class KepalaLabController extends Controller
 
     private function filteredKerusakan(Request $request)
     {
+        $filter = collect($request->only(['tanggal_mulai', 'tanggal_selesai', 'laboratorium', 'status', 'kategori']))
+            ->map(fn ($value) => is_string($value) ? trim($value) : $value)
+            ->filter(fn ($value) => filled($value))
+            ->all();
+
         return Kerusakan::withReportRelations()
-            ->filterLaporan($request->only(['tanggal_mulai', 'tanggal_selesai', 'laboratorium', 'status', 'kategori']));
+            ->filterLaporan($filter);
     }
 }

@@ -822,21 +822,21 @@
             <section id="laporan" class="panel">
                 <h3>Laporan Kerusakan Laboratorium</h3>
 
-                <form method="GET" action="{{ route('kepala_lab.laporan') }}">
+                <form id="laporan-filter-form" method="GET" action="{{ route('kepala_lab.laporan') }}">
                     <div class="filter-grid">
                         <div>
                             <label>Tanggal Mulai</label>
-                            <input type="date" name="tanggal_mulai" value="{{ $filter['tanggal_mulai'] ?? '' }}">
+                            <input id="filter-tanggal-mulai" type="date" name="tanggal_mulai" value="{{ $filter['tanggal_mulai'] ?? '' }}">
                         </div>
 
                         <div>
                             <label>Tanggal Selesai</label>
-                            <input type="date" name="tanggal_selesai" value="{{ $filter['tanggal_selesai'] ?? '' }}">
+                            <input id="filter-tanggal-selesai" type="date" name="tanggal_selesai" value="{{ $filter['tanggal_selesai'] ?? '' }}">
                         </div>
 
                         <div>
                             <label>Laboratorium</label>
-                            <select name="laboratorium">
+                            <select id="filter-laboratorium" name="laboratorium">
                                 <option value="">Semua Laboratorium</option>
                                 @foreach($lokasiLab as $lokasi)
                                     <option value="{{ $lokasi }}" @selected(($filter['laboratorium'] ?? '') === $lokasi)>
@@ -848,7 +848,7 @@
 
                         <div>
                             <label>Status</label>
-                            <select name="status">
+                            <select id="filter-status" name="status">
                                 <option value="">Semua Status</option>
                                 <option value="Rusak" @selected(($filter['status'] ?? '') === 'Rusak')>Rusak</option>
                                 <option value="Diproses" @selected(($filter['status'] ?? '') === 'Diproses')>Diproses</option>
@@ -858,7 +858,7 @@
 
                         <div>
                             <label>Kategori Kerusakan</label>
-                            <select name="kategori">
+                            <select id="filter-kategori" name="kategori">
                                 <option value="">Semua Kategori</option>
                                 @foreach($totalPerKategori as $kategori => $total)
                                     <option value="{{ $kategori }}" @selected(($filter['kategori'] ?? '') === $kategori)>
@@ -878,7 +878,7 @@
                 </form>
 
                 <div class="table-wrap">
-                    <table>
+                    <table id="laporan-table">
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
@@ -900,7 +900,12 @@
                                     default => '',
                                 };
                             @endphp
-                            <tr>
+                            <tr
+                                data-laporan-row
+                                data-tanggal="{{ $data->tanggal }}"
+                                data-laboratorium="{{ $data->user->lokasi_lab ?? '-' }}"
+                                data-status="{{ $data->status }}"
+                                data-kategori="{{ $data->jenis_kerusakan }}">
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->tanggal }}</td>
                                 <td>{{ $data->user->lokasi_lab ?? '-' }}</td>
@@ -911,15 +916,88 @@
                                 <td>{{ $data->deskripsi }}</td>
                             </tr>
                         @empty
-                            <tr>
+                            <tr data-empty-row>
                                 <td colspan="8">Tidak ada laporan sesuai filter.</td>
                             </tr>
                         @endforelse
+                        <tr id="client-empty-row" style="display: none;">
+                            <td colspan="8">Tidak ada laporan sesuai filter.</td>
+                        </tr>
                     </table>
                 </div>
             </section>
             @endif
         </main>
     </div>
+    @if($reportOnly)
+        <script>
+            const laporanFilterForm = document.getElementById('laporan-filter-form');
+            const tanggalMulaiInput = document.getElementById('filter-tanggal-mulai');
+            const tanggalSelesaiInput = document.getElementById('filter-tanggal-selesai');
+            const laboratoriumSelect = document.getElementById('filter-laboratorium');
+            const statusSelect = document.getElementById('filter-status');
+            const kategoriSelect = document.getElementById('filter-kategori');
+            const laporanRows = Array.from(document.querySelectorAll('[data-laporan-row]'));
+            const clientEmptyRow = document.getElementById('client-empty-row');
+
+            function rowMatchesFilter(row) {
+                const tanggalMulai = tanggalMulaiInput.value;
+                const tanggalSelesai = tanggalSelesaiInput.value;
+                const laboratorium = laboratoriumSelect.value;
+                const status = statusSelect.value;
+                const kategori = kategoriSelect.value;
+                const rowTanggal = row.dataset.tanggal;
+
+                if (tanggalMulai && rowTanggal < tanggalMulai) {
+                    return false;
+                }
+
+                if (tanggalSelesai && rowTanggal > tanggalSelesai) {
+                    return false;
+                }
+
+                if (laboratorium && row.dataset.laboratorium !== laboratorium) {
+                    return false;
+                }
+
+                if (status && row.dataset.status !== status) {
+                    return false;
+                }
+
+                if (kategori && row.dataset.kategori !== kategori) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            function applyLaporanFilter() {
+                let visibleRows = 0;
+
+                laporanRows.forEach(function (row) {
+                    const isVisible = rowMatchesFilter(row);
+                    row.style.display = isVisible ? '' : 'none';
+
+                    if (isVisible) {
+                        visibleRows++;
+                    }
+                });
+
+                if (clientEmptyRow) {
+                    clientEmptyRow.style.display = visibleRows === 0 ? '' : 'none';
+                }
+            }
+
+            [tanggalMulaiInput, tanggalSelesaiInput, laboratoriumSelect, statusSelect, kategoriSelect].forEach(function (control) {
+                control.addEventListener('change', applyLaporanFilter);
+            });
+
+            laporanFilterForm.addEventListener('submit', function () {
+                applyLaporanFilter();
+            });
+
+            applyLaporanFilter();
+        </script>
+    @endif
 </body>
 </html>
