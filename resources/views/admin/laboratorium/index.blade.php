@@ -5,12 +5,29 @@
 @section('page_subtitle', 'Data kerusakan per masing-masing laboratorium')
 
 @section('content')
+    <section class="panel lab-filter-panel">
+        <label for="lab-selector">Pilih Laboratorium</label>
+        <select id="lab-selector">
+            @foreach($lokasiLaboratorium as $laboratorium)
+                @php
+                    $dataKerusakan = $kerusakanPerLaboratorium->get($laboratorium, collect());
+                @endphp
+                <option value="lab-panel-{{ $loop->index }}">
+                    {{ $laboratorium }} ({{ $dataKerusakan->count() }} data)
+                </option>
+            @endforeach
+        </select>
+    </section>
+
     @foreach($lokasiLaboratorium as $laboratorium)
         @php
             $dataKerusakan = $kerusakanPerLaboratorium->get($laboratorium, collect());
         @endphp
 
-        <section class="panel lab-panel">
+        <section
+            class="panel lab-panel {{ $loop->first ? 'active' : '' }}"
+            id="lab-panel-{{ $loop->index }}"
+            data-lab-panel>
             <div class="lab-panel-header">
                 <div>
                     <span class="eyebrow">Laboratorium</span>
@@ -77,3 +94,17 @@
         </section>
     @endforeach
 @endsection
+
+@push('scripts')
+    <script>
+        const labSelector = document.getElementById('lab-selector');
+
+        if (labSelector) {
+            labSelector.addEventListener('change', function () {
+                document.querySelectorAll('[data-lab-panel]').forEach(function (panel) {
+                    panel.classList.toggle('active', panel.id === labSelector.value);
+                });
+            });
+        }
+    </script>
+@endpush

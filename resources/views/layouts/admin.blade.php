@@ -337,6 +337,22 @@
             line-height: 28px;
         }
 
+        .lab-filter-panel {
+            margin-bottom: 16px;
+        }
+
+        .lab-filter-panel select {
+            max-width: 520px;
+        }
+
+        .lab-panel {
+            display: none;
+        }
+
+        .lab-panel.active {
+            display: block;
+        }
+
         .lab-panel-header {
             display: flex;
             align-items: flex-start;
