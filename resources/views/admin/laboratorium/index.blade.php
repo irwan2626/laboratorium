@@ -74,7 +74,7 @@
                                     @if($data->foto)
                                         <img
                                             class="table-preview"
-                                            src="{{ route('kerusakan.foto', ['path' => $data->foto]) }}"
+                                            src="{{ Storage::disk('public')->url($data->foto) }}"
                                             alt="Foto kerusakan">
                                     @else
                                         Tidak ada foto
