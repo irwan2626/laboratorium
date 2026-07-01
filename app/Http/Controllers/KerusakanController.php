@@ -189,6 +189,7 @@ class KerusakanController extends Controller
     public function dataKerusakan()
     {
         $kerusakan = Kerusakan::withPeralatan()
+            ->where('user_id', auth()->id())
             ->latest()
             ->get();
 
