@@ -14,14 +14,17 @@ class LaboratoriumController extends Controller
      */
     public function index()
     {
-        $lokasiLaboratorium = User::LOKASI_LAB;
-        $kerusakanPerLaboratorium = Kerusakan::with(['peralatan', 'user'])
-            ->latest()
-            ->get()
-            ->groupBy(fn (Kerusakan $kerusakan) => $kerusakan->user->lokasi_lab ?? 'Tanpa Laboratorium');
-        $lokasiLaboratorium = collect($lokasiLaboratorium)
-            ->when($kerusakanPerLaboratorium->has('Tanpa Laboratorium'), fn ($lokasi) => $lokasi->push('Tanpa Laboratorium'))
-            ->all();
+        $lokasiLaboratorium = collect(User::LOKASI_LAB)->all();
+
+        $kerusakanPerLaboratorium = collect($lokasiLaboratorium)
+            ->mapWithKeys(function (string $laboratorium) {
+                $kerusakan = Kerusakan::withPeralatan()
+                    ->whereHas('user', fn ($query) => $query->where('lokasi_lab', $laboratorium))
+                    ->latest()
+                    ->get();
+
+                return [$laboratorium => $kerusakan];
+            });
 
         return view('admin.laboratorium.index', compact('lokasiLaboratorium', 'kerusakanPerLaboratorium'));
     }
