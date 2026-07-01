@@ -5,6 +5,7 @@ use App\Models\Kerusakan;
 use App\Models\Peralatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Laboratorium;
 
@@ -144,23 +145,30 @@ class KerusakanController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'kode_barang' => ['required', 'string', 'max:255'],
             'nama_barang' => ['required', 'string', 'max:255'],
             'kondisi' => ['required', 'string', 'max:255'],
-            'jenis_kerusakan' => ['required', Rule::in(Kerusakan::JENIS_KERUSAKAN)],
+            'jenis_kerusakan' => ['nullable', Rule::in(Kerusakan::JENIS_KERUSAKAN)],
             'deskripsi' => ['nullable', 'string'],
             'foto' => ['nullable', 'image'],
         ]);
 
+        Validator::make($validated, [
+            'jenis_kerusakan' => [
+                Rule::requiredIf(in_array($validated['kondisi'], ['Rusak', 'Tidak Bisa Digunakan'], true)),
+                Rule::in(Kerusakan::JENIS_KERUSAKAN),
+            ],
+        ])->validate();
+
         $foto = $this->storeFoto($request);
 
         $peralatan = Peralatan::updateOrCreate(
-            ['kode_barang' => $request->kode_barang],
+            ['kode_barang' => $validated['kode_barang']],
             [
-                'nama_barang' => $request->nama_barang,
-                'kondisi' => $request->kondisi,
-                'qr_code' => $request->kode_barang,
+                'nama_barang' => $validated['nama_barang'],
+                'kondisi' => $validated['kondisi'],
+                'qr_code' => $validated['kode_barang'],
             ]
         );
 
@@ -173,10 +181,10 @@ class KerusakanController extends Controller
             auth()->user()->id,
 
             'jenis_kerusakan' =>
-            $request->jenis_kerusakan,
+            $validated['jenis_kerusakan'] ?? null,
 
             'deskripsi' =>
-            $request->deskripsi,
+            $validated['deskripsi'] ?? null,
 
             'foto' => $foto,
 
@@ -219,7 +227,7 @@ class KerusakanController extends Controller
     {
         $kerusakan->load('peralatan');
 
-        $request->validate([
+        $validated = $request->validate([
             'kode_barang' => [
                 'required',
                 'string',
@@ -228,18 +236,25 @@ class KerusakanController extends Controller
             ],
             'nama_barang' => ['required', 'string', 'max:255'],
             'kondisi' => ['required', 'string', 'max:255'],
-            'jenis_kerusakan' => ['required', Rule::in(Kerusakan::JENIS_KERUSAKAN)],
+            'jenis_kerusakan' => ['nullable', Rule::in(Kerusakan::JENIS_KERUSAKAN)],
             'deskripsi' => ['nullable', 'string'],
             'status' => ['required', 'string', 'max:255'],
             'tanggal' => ['required', 'date'],
             'foto' => ['nullable', 'image'],
         ]);
 
+        Validator::make($validated, [
+            'jenis_kerusakan' => [
+                Rule::requiredIf(in_array($validated['kondisi'], ['Rusak', 'Tidak Bisa Digunakan'], true)),
+                Rule::in(Kerusakan::JENIS_KERUSAKAN),
+            ],
+        ])->validate();
+
         $kerusakan->peralatan->update([
-            'kode_barang' => $request->kode_barang,
-            'nama_barang' => $request->nama_barang,
-            'kondisi' => $request->kondisi,
-            'qr_code' => $request->kode_barang,
+            'kode_barang' => $validated['kode_barang'],
+            'nama_barang' => $validated['nama_barang'],
+            'kondisi' => $validated['kondisi'],
+            'qr_code' => $validated['kode_barang'],
         ]);
 
         $foto = $kerusakan->foto;
@@ -251,11 +266,11 @@ class KerusakanController extends Controller
         }
 
         $kerusakan->update([
-            'jenis_kerusakan' => $request->jenis_kerusakan,
-            'deskripsi' => $request->deskripsi,
+            'jenis_kerusakan' => $validated['jenis_kerusakan'] ?? null,
+            'deskripsi' => $validated['deskripsi'] ?? null,
             'foto' => $foto,
-            'status' => $request->status,
-            'tanggal' => $request->tanggal,
+            'status' => $validated['status'],
+            'tanggal' => $validated['tanggal'],
         ]);
 
         return redirect('/data-kerusakan')

@@ -46,7 +46,7 @@
             <div class="mb-3">
                 <label>Kondisi Barang</label>
 
-                <select name="kondisi" required>
+                <select name="kondisi" id="kondisi-barang" required>
                     <option value="">Pilih kondisi barang</option>
                     <option value="Digunakan" @selected(old('kondisi', $peralatan->kondisi ?? '') === 'Digunakan')>Digunakan</option>
                     <option value="Sedang Digunakan" @selected(old('kondisi', $peralatan->kondisi ?? '') === 'Sedang Digunakan')>Sedang Digunakan</option>
@@ -55,11 +55,12 @@
                 </select>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3" id="jenis-kerusakan-wrap">
                 <label>Jenis Kerusakan</label>
 
                 <select
                     name="jenis_kerusakan"
+                    id="jenis-kerusakan"
                     required>
                     <option value="">Pilih jenis kerusakan</option>
                     <option value="Ringan" @selected(old('jenis_kerusakan') === 'Ringan')>Kerusakan Ringan</option>
@@ -95,4 +96,28 @@
             </div>
         </form>
     </section>
+
+    <script>
+        (function () {
+            const kondisiBaru = document.getElementById('kondisi-barang');
+            const jenisWrap = document.getElementById('jenis-kerusakan-wrap');
+            const jenisSelect = document.getElementById('jenis-kerusakan');
+
+            if (!kondisiBaru || !jenisWrap || !jenisSelect) {
+                return;
+            }
+
+            const toggleJenis = () => {
+                const needsJenis = ['Rusak', 'Tidak Bisa Digunakan'].includes(kondisiBaru.value);
+                jenisWrap.style.display = needsJenis ? '' : 'none';
+                jenisSelect.required = needsJenis;
+                if (!needsJenis) {
+                    jenisSelect.value = '';
+                }
+            };
+
+            kondisiBaru.addEventListener('change', toggleJenis);
+            toggleJenis();
+        })();
+    </script>
 @endsection
