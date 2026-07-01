@@ -73,7 +73,7 @@
                                 <td>
                                     @if($data->foto)
                                         <img
-                                            class="preview"
+                                            class="table-preview"
                                             src="{{ Storage::disk('public')->url($data->foto) }}"
                                             alt="Foto kerusakan">
                                     @else
