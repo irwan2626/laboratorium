@@ -739,18 +739,13 @@
                 </div>
 
                 <div class="stat-card">
-                    <p>Total Alat Digunakan</p>
+                    <p>Total Digunakan</p>
                     <strong>{{ $totalAlatDigunakan }}</strong>
                 </div>
 
                 <div class="stat-card">
                     <p>Total Kerusakan</p>
                     <strong>{{ $totalKerusakan }}</strong>
-                </div>
-
-                <div class="stat-card">
-                    <p>Total Unit Komputer</p>
-                    <strong>{{ $totalUnitKomputer }}</strong>
                 </div>
 
                 @foreach($totalPerKategori as $kategori => $total)

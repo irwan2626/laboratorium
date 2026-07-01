@@ -33,7 +33,6 @@ class KepalaLabController extends Controller
         return view('kepala_lab.dashboard', [
             'totalLaboratorium' => count($lokasiLab),
             'totalKerusakan' => Kerusakan::count(),
-            'totalUnitKomputer' => Peralatan::count(),
             'totalAlatDigunakan' => Peralatan::where('kondisi', 'Digunakan')->count(),
             'grafikBulanan' => $grafikBulanan,
             'grafikPerLabor' => Kerusakan::countByLaboratorium($lokasiLab),
