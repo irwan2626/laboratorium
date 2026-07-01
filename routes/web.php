@@ -185,6 +185,10 @@ SVG;
 
 Route::get('/', [HomeController::class, 'index']);
 
+Route::get('/kerusakan/foto/{path}', [KerusakanController::class, 'foto'])
+        ->where('path', '.*')
+        ->name('kerusakan.foto');
+
 Route::get('/dashboard', [DashboardController::class, 'redirectByRole'])
     ->middleware(['auth'])
     ->name('dashboard');
@@ -193,9 +197,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        Route::get('/kerusakan/foto/{path}', [KerusakanController::class, 'foto'])
-                ->where('path', '.*')
-                ->name('kerusakan.foto');
 });
 
 

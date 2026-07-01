@@ -8,10 +8,10 @@
             {{ session('success') }}
         </div>
     @endif
-
-    <div class="panel">
-        <div class="action-row">
-            <a href="/scan" class="btn btn-gold">Scan QR Kerusakan</a>
+                                <img
+                                    class="preview"
+                                    src="{{ route('kerusakan.foto', ['path' => $data->foto]) }}"
+                                    alt="Foto kerusakan">
         </div>
 
         <div class="table-wrap">
