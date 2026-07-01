@@ -26,7 +26,7 @@
                             @if($data->foto)
                                 <img
                                     class="table-preview"
-                                    src="{{ route('kerusakan.foto', ['path' => $data->foto]) }}"
+                                    src="{{ asset('uploads/' . basename($data->foto)) }}"
                                     alt="Foto kerusakan">
                             @else
                                 Tidak ada foto
