@@ -26,7 +26,7 @@
                             @if($data->foto)
                                 <img
                                     class="table-preview"
-                                    src="{{ asset('uploads/' . basename($data->foto)) }}"
+                                    src="{{ asset('uploads/' . $data->foto) }}"
                                     alt="Foto kerusakan">
                             @else
                                 Tidak ada foto

@@ -97,7 +97,7 @@
                     <div class="mb-3">
                         <img
                             class="preview"
-                            src="{{ Storage::disk('public')->url($kerusakan->foto) }}"
+                            src="{{ asset('uploads/' . $kerusakan->foto) }}"
                             alt="Foto kerusakan saat ini">
                     </div>
                 @endif
