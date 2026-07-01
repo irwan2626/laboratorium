@@ -11,6 +11,13 @@ use App\Models\Laboratorium;
 
 class KerusakanController extends Controller
 {
+    public function foto(string $path)
+    {
+        abort_unless(Storage::disk('public')->exists($path), 404);
+
+        return Storage::disk('public')->response($path);
+    }
+
     public function dashboard()
     {
         $total = Kerusakan::count();

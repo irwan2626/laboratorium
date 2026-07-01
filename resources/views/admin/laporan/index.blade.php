@@ -10,6 +10,7 @@
             <table>
                 <tr>
                     <th>No</th>
+                    <th>Foto</th>
                     <th>Kode Barang</th>
                     <th>Nama Barang</th>
                     <th>Jenis Kerusakan</th>
@@ -21,6 +22,16 @@
                 @forelse($kerusakan as $data)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
+                        <td>
+                            @if($data->foto)
+                                <img
+                                    class="table-preview"
+                                    src="{{ route('kerusakan.foto', ['path' => $data->foto]) }}"
+                                    alt="Foto kerusakan">
+                            @else
+                                Tidak ada foto
+                            @endif
+                        </td>
                         <td>{{ $data->peralatan->kode_barang }}</td>
                         <td>{{ $data->peralatan->nama_barang }}</td>
                         <td>{{ $data->jenis_kerusakan }}</td>
@@ -30,7 +41,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7">Belum ada laporan kerusakan.</td>
+                        <td colspan="8">Belum ada laporan kerusakan.</td>
                     </tr>
                 @endforelse
             </table>

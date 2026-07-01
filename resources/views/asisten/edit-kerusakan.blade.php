@@ -97,7 +97,7 @@
                     <div class="mb-3">
                         <img
                             class="preview"
-                            src="{{ Storage::disk('public')->url($kerusakan->foto) }}"
+                            src="{{ route('kerusakan.foto', ['path' => $kerusakan->foto]) }}"
                             alt="Foto kerusakan saat ini">
                     </div>
                 @endif
