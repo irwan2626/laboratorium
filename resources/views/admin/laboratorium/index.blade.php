@@ -74,7 +74,7 @@
                                     @if($data->foto)
                                         <img
                                             class="table-preview"
-                                            src="{{ asset('uploads/' . $data->foto) }}"
+                                            src="{{ Storage::disk('public')->url($data->foto) }}"
                                             alt="Foto kerusakan">
                                     @else
                                         Tidak ada foto
