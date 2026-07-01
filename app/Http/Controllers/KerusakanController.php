@@ -13,9 +13,56 @@ class KerusakanController extends Controller
 {
     public function foto(string $path)
     {
-        abort_unless(Storage::disk('public')->exists($path), 404);
+        $path = urldecode(trim($path, '/'));
 
-        return Storage::disk('public')->response($path);
+        $resolvedPath = $this->resolveFotoPath($path);
+
+        abort_unless($resolvedPath, 404);
+
+        return response()->file($resolvedPath);
+    }
+
+    private function resolveFotoPath(string $path): ?string
+    {
+        $candidates = [
+            storage_path('app/public/' . $path),
+            public_path($path),
+            public_path('storage/' . $path),
+            public_path('uploads/' . $path),
+            base_path('uploads/' . $path),
+        ];
+
+        foreach ($candidates as $candidate) {
+            if (is_file($candidate)) {
+                return $candidate;
+            }
+        }
+
+        $basename = basename($path);
+
+        foreach ([
+            storage_path('app/public'),
+            public_path(),
+            public_path('storage'),
+            public_path('uploads'),
+            base_path('uploads'),
+        ] as $root) {
+            if (!is_dir($root)) {
+                continue;
+            }
+
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS)
+            );
+
+            foreach ($iterator as $file) {
+                if ($file->isFile() && $file->getFilename() === $basename) {
+                    return $file->getPathname();
+                }
+            }
+        }
+
+        return null;
     }
 
     public function dashboard()
