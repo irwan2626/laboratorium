@@ -34,7 +34,7 @@ class KepalaLabController extends Controller
             'totalLaboratorium' => count($lokasiLab),
             'totalKerusakan' => Kerusakan::count(),
             'totalUnitKomputer' => Peralatan::count(),
-            'totalAlatDigunakan' => Peralatan::whereIn('kondisi', ['Digunakan', 'Sedang Digunakan'])->count(),
+            'totalAlatDigunakan' => Peralatan::where('kondisi', 'Digunakan')->count(),
             'grafikBulanan' => $grafikBulanan,
             'grafikPerLabor' => Kerusakan::countByLaboratorium($lokasiLab),
             'totalPerKategori' => Kerusakan::countByJenis(),

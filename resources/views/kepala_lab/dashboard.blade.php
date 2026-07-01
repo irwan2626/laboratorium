@@ -855,9 +855,9 @@
                             <label>Status</label>
                             <select id="filter-status" name="status">
                                 <option value="">Semua Status</option>
+                                <option value="Digunakan" @selected(($filter['status'] ?? '') === 'Digunakan')>Digunakan</option>
                                 <option value="Rusak" @selected(($filter['status'] ?? '') === 'Rusak')>Rusak</option>
-                                <option value="Diproses" @selected(($filter['status'] ?? '') === 'Diproses')>Diproses</option>
-                                <option value="Selesai" @selected(($filter['status'] ?? '') === 'Selesai')>Selesai</option>
+                                <option value="Tidak Bisa Digunakan" @selected(($filter['status'] ?? '') === 'Tidak Bisa Digunakan')>Tidak Bisa Digunakan</option>
                             </select>
                         </div>
 

@@ -32,7 +32,7 @@ class DashboardController extends Controller
             'totalLaboratorium' => Laboratorium::count(),
             'totalPeralatan' => Peralatan::count(),
             'totalKerusakan' => Kerusakan::count(),
-            'totalAlatDigunakan' => Peralatan::whereIn('kondisi', ['Digunakan', 'Sedang Digunakan'])->count(),
+            'totalAlatDigunakan' => Peralatan::where('kondisi', 'Digunakan')->count(),
             'grafikKerusakan' => $grafikKerusakan,
             'peralatan' => Peralatan::latest()->get(),
             'kerusakan' => Kerusakan::withPeralatan()->latest()->get(),
