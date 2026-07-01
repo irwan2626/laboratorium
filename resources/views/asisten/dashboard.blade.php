@@ -9,6 +9,12 @@
             <span class="stat-meta"><span class="stat-dot"></span> Semua laporan</span>
         </div>
 
+        <div class="stat-card">
+            <p>Total Alat Digunakan</p>
+            <strong>{{ $totalAlatDigunakan }}</strong>
+            <span class="stat-meta"><span class="stat-dot"></span> Kondisi aktif</span>
+        </div>
+
         <div class="stat-card status-light">
             <p>Kerusakan Ringan</p>
             <strong>{{ $totalPerJenis['Ringan'] }}</strong>

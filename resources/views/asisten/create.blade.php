@@ -44,6 +44,18 @@
             </div>
 
             <div class="mb-3">
+                <label>Kondisi Barang</label>
+
+                <select name="kondisi" required>
+                    <option value="">Pilih kondisi barang</option>
+                    <option value="Digunakan" @selected(old('kondisi', $peralatan->kondisi ?? '') === 'Digunakan')>Digunakan</option>
+                    <option value="Sedang Digunakan" @selected(old('kondisi', $peralatan->kondisi ?? '') === 'Sedang Digunakan')>Sedang Digunakan</option>
+                    <option value="Rusak" @selected(old('kondisi', $peralatan->kondisi ?? '') === 'Rusak')>Rusak</option>
+                    <option value="Tidak Bisa Digunakan" @selected(old('kondisi', $peralatan->kondisi ?? '') === 'Tidak Bisa Digunakan')>Tidak Bisa Digunakan</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
                 <label>Jenis Kerusakan</label>
 
                 <select

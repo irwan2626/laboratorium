@@ -739,6 +739,11 @@
                 </div>
 
                 <div class="stat-card">
+                    <p>Total Alat Digunakan</p>
+                    <strong>{{ $totalAlatDigunakan }}</strong>
+                </div>
+
+                <div class="stat-card">
                     <p>Total Kerusakan</p>
                     <strong>{{ $totalKerusakan }}</strong>
                 </div>

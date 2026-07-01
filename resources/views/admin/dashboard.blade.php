@@ -23,6 +23,12 @@
         </div>
 
         <div class="stat-card">
+            <p>Total Alat Digunakan</p>
+            <strong>{{ $totalAlatDigunakan }}</strong>
+            <span class="stat-meta">Kondisi aktif</span>
+        </div>
+
+        <div class="stat-card">
             <p>Total Kerusakan</p>
             <strong>{{ $totalKerusakan }}</strong>
             <span class="stat-meta">Semua laporan</span>

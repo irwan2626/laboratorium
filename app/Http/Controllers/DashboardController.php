@@ -22,11 +22,18 @@ class DashboardController extends Controller
 
     public function admin()
     {
+        $grafikKerusakan = collect(Kerusakan::JENIS_KERUSAKAN)
+            ->mapWithKeys(fn (string $jenis) => [
+                $jenis => Kerusakan::where('jenis_kerusakan', $jenis)->count(),
+            ])
+            ->all();
+
         return view('admin.dashboard', [
             'totalLaboratorium' => Laboratorium::count(),
             'totalPeralatan' => Peralatan::count(),
             'totalKerusakan' => Kerusakan::count(),
-            'grafikKerusakan' => Kerusakan::countByJenis(),
+            'totalAlatDigunakan' => Peralatan::whereIn('kondisi', ['Digunakan', 'Sedang Digunakan'])->count(),
+            'grafikKerusakan' => $grafikKerusakan,
             'peralatan' => Peralatan::latest()->get(),
             'kerusakan' => Kerusakan::withPeralatan()->latest()->get(),
             'kategoriKerusakan' => KategoriKerusakan::latest()->get(),

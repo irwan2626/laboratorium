@@ -121,7 +121,9 @@ class KerusakanController extends Controller
             ->take(5)
             ->get();
 
-        return view('asisten.dashboard', compact('total', 'totalPerJenis', 'kerusakanTerbaru'));
+        $totalAlatDigunakan = Peralatan::whereIn('kondisi', ['Digunakan', 'Sedang Digunakan'])->count();
+
+        return view('asisten.dashboard', compact('total', 'totalPerJenis', 'kerusakanTerbaru', 'totalAlatDigunakan'));
     }
 
 
@@ -145,14 +147,11 @@ class KerusakanController extends Controller
         $request->validate([
             'kode_barang' => ['required', 'string', 'max:255'],
             'nama_barang' => ['required', 'string', 'max:255'],
+            'kondisi' => ['required', 'string', 'max:255'],
             'jenis_kerusakan' => ['required', Rule::in(Kerusakan::JENIS_KERUSAKAN)],
             'deskripsi' => ['nullable', 'string'],
             'foto' => ['nullable', 'image'],
         ]);
-
-        $kondisi = $request->jenis_kerusakan === 'Tidak Bisa Digunakan'
-            ? 'Tidak Bisa Digunakan'
-            : 'Rusak';
 
         $foto = $this->storeFoto($request);
 
@@ -160,7 +159,7 @@ class KerusakanController extends Controller
             ['kode_barang' => $request->kode_barang],
             [
                 'nama_barang' => $request->nama_barang,
-                'kondisi' => $kondisi,
+                'kondisi' => $request->kondisi,
                 'qr_code' => $request->kode_barang,
             ]
         );
@@ -228,6 +227,7 @@ class KerusakanController extends Controller
                 Rule::unique('peralatans', 'kode_barang')->ignore($kerusakan->peralatan_id),
             ],
             'nama_barang' => ['required', 'string', 'max:255'],
+            'kondisi' => ['required', 'string', 'max:255'],
             'jenis_kerusakan' => ['required', Rule::in(Kerusakan::JENIS_KERUSAKAN)],
             'deskripsi' => ['nullable', 'string'],
             'status' => ['required', 'string', 'max:255'],
@@ -235,14 +235,10 @@ class KerusakanController extends Controller
             'foto' => ['nullable', 'image'],
         ]);
 
-        $kondisi = $request->jenis_kerusakan === 'Tidak Bisa Digunakan'
-            ? 'Tidak Bisa Digunakan'
-            : 'Rusak';
-
         $kerusakan->peralatan->update([
             'kode_barang' => $request->kode_barang,
             'nama_barang' => $request->nama_barang,
-            'kondisi' => $kondisi,
+            'kondisi' => $request->kondisi,
             'qr_code' => $request->kode_barang,
         ]);
 
