@@ -13,8 +13,9 @@ use App\Http\Controllers\KategoriKerusakanController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-function kerusakanPlaceholderResponse()
-{
+if (! function_exists('kerusakanPlaceholderResponse')) {
+    function kerusakanPlaceholderResponse()
+    {
         $placeholder = <<<'SVG'
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Foto belum tersedia">
     <rect width="240" height="180" rx="18" fill="#eef2ff"/>
@@ -28,6 +29,7 @@ SVG;
                 'Content-Type' => 'image/svg+xml',
                 'Cache-Control' => 'no-cache',
         ]);
+    }
 }
 
 Route::get('/uploads/{path}', function (string $path) {

@@ -50,14 +50,16 @@
                 <select name="kondisi" id="kondisi-barang" required>
                     <option value="">Pilih kondisi barang</option>
                     <option value="Digunakan" @selected(old('kondisi', $kerusakan->peralatan->kondisi) === 'Digunakan')>Digunakan</option>
-                    <option value="Sedang Digunakan" @selected(old('kondisi', $kerusakan->peralatan->kondisi) === 'Sedang Digunakan')>Sedang Digunakan</option>
                     <option value="Rusak" @selected(old('kondisi', $kerusakan->peralatan->kondisi) === 'Rusak')>Rusak</option>
                     <option value="Tidak Bisa Digunakan" @selected(old('kondisi', $kerusakan->peralatan->kondisi) === 'Tidak Bisa Digunakan')>Tidak Bisa Digunakan</option>
                 </select>
+                @error('kondisi')
+                    <div class="muted">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3" id="jenis-kerusakan-wrap">
-                <label>Jenis Kerusakan</label>
+                <label>Status Kerusakan</label>
                 <select name="jenis_kerusakan" id="jenis-kerusakan" required>
                     <option value="">Pilih jenis kerusakan</option>
                     <option value="Ringan" @selected(old('jenis_kerusakan', $kerusakan->jenis_kerusakan) === 'Ringan')>Kerusakan Ringan</option>

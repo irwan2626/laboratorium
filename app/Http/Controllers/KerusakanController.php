@@ -12,6 +12,12 @@ use App\Models\Laboratorium;
 
 class KerusakanController extends Controller
 {
+    private const KONDISI_BARANG = [
+        'Digunakan',
+        'Rusak',
+        'Tidak Bisa Digunakan',
+    ];
+
     public function foto(string $path)
     {
         $path = urldecode(trim($path, '/'));
@@ -122,7 +128,7 @@ class KerusakanController extends Controller
             ->take(5)
             ->get();
 
-        $totalAlatDigunakan = Peralatan::whereIn('kondisi', ['Digunakan', 'Sedang Digunakan'])->count();
+        $totalAlatDigunakan = Peralatan::where('kondisi', 'Digunakan')->count();
 
         return view('asisten.dashboard', compact('total', 'totalPerJenis', 'kerusakanTerbaru', 'totalAlatDigunakan'));
     }
@@ -148,7 +154,7 @@ class KerusakanController extends Controller
         $validated = $request->validate([
             'kode_barang' => ['required', 'string', 'max:255'],
             'nama_barang' => ['required', 'string', 'max:255'],
-            'kondisi' => ['required', 'string', 'max:255'],
+            'kondisi' => ['required', Rule::in(self::KONDISI_BARANG)],
             'jenis_kerusakan' => ['nullable', Rule::in(Kerusakan::JENIS_KERUSAKAN)],
             'deskripsi' => ['nullable', 'string'],
             'foto' => ['nullable', 'image'],
@@ -156,6 +162,7 @@ class KerusakanController extends Controller
 
         Validator::make($validated, [
             'jenis_kerusakan' => [
+                'nullable',
                 Rule::requiredIf(in_array($validated['kondisi'], ['Rusak', 'Tidak Bisa Digunakan'], true)),
                 Rule::in(Kerusakan::JENIS_KERUSAKAN),
             ],
@@ -188,7 +195,7 @@ class KerusakanController extends Controller
 
             'foto' => $foto,
 
-            'status' => 'Rusak',
+            'status' => $validated['kondisi'],
 
             'tanggal' => now()
         ]);
@@ -235,7 +242,7 @@ class KerusakanController extends Controller
                 Rule::unique('peralatans', 'kode_barang')->ignore($kerusakan->peralatan_id),
             ],
             'nama_barang' => ['required', 'string', 'max:255'],
-            'kondisi' => ['required', 'string', 'max:255'],
+            'kondisi' => ['required', Rule::in(self::KONDISI_BARANG)],
             'jenis_kerusakan' => ['nullable', Rule::in(Kerusakan::JENIS_KERUSAKAN)],
             'deskripsi' => ['nullable', 'string'],
             'status' => ['required', 'string', 'max:255'],
@@ -245,6 +252,7 @@ class KerusakanController extends Controller
 
         Validator::make($validated, [
             'jenis_kerusakan' => [
+                'nullable',
                 Rule::requiredIf(in_array($validated['kondisi'], ['Rusak', 'Tidak Bisa Digunakan'], true)),
                 Rule::in(Kerusakan::JENIS_KERUSAKAN),
             ],
