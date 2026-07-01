@@ -38,10 +38,10 @@ Route::get('/uploads/{path}', function (string $path) {
         }
 
         $locations = [
-                Storage::disk('public')->path($path),
                 base_path('uploads/'.$path),
                 base_path('public/uploads/'.$path),
                 base_path('public/storage/'.$path),
+                Storage::disk('public')->path($path),
         ];
 
         foreach ($locations as $location) {

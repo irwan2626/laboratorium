@@ -48,7 +48,10 @@
                         <td>{{ $data->deskripsi }}</td>
                         <td>
                             @if($data->foto)
-                                <img class="preview"src="{{ asset('uploads/' . $data->foto) }}"alt="Foto kerusakan">
+                                <img
+                                    class="preview"
+                                    src="{{ route('kerusakan.foto', ['path' => $data->foto]) }}"
+                                    alt="Foto kerusakan">
                             @else
                                 Tidak ada foto
                             @endif

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Kerusakan;
 use App\Models\Peralatan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 use App\Models\Laboratorium;
 
@@ -25,11 +25,13 @@ class KerusakanController extends Controller
     private function resolveFotoPath(string $path): ?string
     {
         $candidates = [
+            base_path('uploads/' . $path),
+            base_path('public/uploads/' . $path),
+            base_path('public/storage/' . $path),
             storage_path('app/public/' . $path),
             public_path($path),
             public_path('storage/' . $path),
             public_path('uploads/' . $path),
-            base_path('uploads/' . $path),
         ];
 
         foreach ($candidates as $candidate) {
@@ -63,6 +65,43 @@ class KerusakanController extends Controller
         }
 
         return null;
+    }
+
+    private function storeFoto(Request $request): ?string
+    {
+        if (! $request->hasFile('foto')) {
+            return null;
+        }
+
+        $directory = base_path('uploads/kerusakan');
+
+        if (! File::exists($directory)) {
+            File::makeDirectory($directory, 0755, true);
+        }
+
+        $file = $request->file('foto');
+        $filename = $file->hashName();
+
+        $file->move($directory, $filename);
+
+        return 'kerusakan/' . $filename;
+    }
+
+    private function deleteFoto(?string $foto): void
+    {
+        if (! $foto) {
+            return;
+        }
+
+        foreach ([
+            base_path('uploads/' . $foto),
+            base_path('public/uploads/' . $foto),
+            storage_path('app/public/' . $foto),
+        ] as $location) {
+            if (is_file($location)) {
+                @unlink($location);
+            }
+        }
     }
 
     public function dashboard()
@@ -108,17 +147,7 @@ class KerusakanController extends Controller
             ? 'Tidak Bisa Digunakan'
             : 'Rusak';
 
-        $foto = null;
-
-        if($request->hasFile('foto'))
-        {
-            $foto =
-            $request->file('foto')
-            ->store(
-                'kerusakan',
-                'public'
-            );
-        }
+        $foto = $this->storeFoto($request);
 
         $peralatan = Peralatan::updateOrCreate(
             ['kode_barang' => $request->kode_barang],
@@ -212,11 +241,9 @@ class KerusakanController extends Controller
         $foto = $kerusakan->foto;
 
         if ($request->hasFile('foto')) {
-            if ($foto) {
-                Storage::disk('public')->delete($foto);
-            }
+            $this->deleteFoto($foto);
 
-            $foto = $request->file('foto')->store('kerusakan', 'public');
+            $foto = $this->storeFoto($request);
         }
 
         $kerusakan->update([
@@ -233,9 +260,7 @@ class KerusakanController extends Controller
 
     public function destroy(Kerusakan $kerusakan)
     {
-        if ($kerusakan->foto) {
-            Storage::disk('public')->delete($kerusakan->foto);
-        }
+        $this->deleteFoto($kerusakan->foto);
 
         $kerusakan->delete();
 
