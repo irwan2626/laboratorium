@@ -106,10 +106,17 @@ class KerusakanController extends Controller
 
     public function dashboard()
     {
-        $total = Kerusakan::count();
-        $totalPerJenis = Kerusakan::countByJenis();
+        $kerusakanUser = Kerusakan::where('user_id', auth()->id());
 
-        $kerusakanTerbaru = Kerusakan::withPeralatan()
+        $total = (clone $kerusakanUser)->count();
+        $totalPerJenis = collect(Kerusakan::JENIS_KERUSAKAN)
+            ->mapWithKeys(fn (string $jenis) => [
+                $jenis => (clone $kerusakanUser)->where('jenis_kerusakan', $jenis)->count(),
+            ])
+            ->all();
+
+        $kerusakanTerbaru = (clone $kerusakanUser)
+            ->withPeralatan()
             ->latest()
             ->take(5)
             ->get();
