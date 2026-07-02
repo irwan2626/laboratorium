@@ -22,21 +22,34 @@ class KepalaLabController extends Controller
     private function renderDashboard(Request $request, bool $reportOnly)
     {
         $lokasiLab = User::LOKASI_LAB;
-        $kerusakanQuery = $this->filteredKerusakan($request);
-        $kerusakan = $kerusakanQuery->latest()->get();
+        $kerusakan = $this->filteredKerusakan($request)->latest()->get();
+        $semuaKerusakan = $this->validKerusakanQuery()->get();
 
-        $grafikBulanan = Kerusakan::selectRaw('MONTH(tanggal) as bulan, COUNT(*) as total')
-            ->groupBy('bulan')
-            ->orderBy('bulan')
-            ->pluck('total', 'bulan');
+        $grafikBulanan = $semuaKerusakan
+            ->groupBy(fn (Kerusakan $data) => (int) date('n', strtotime($data->tanggal)))
+            ->map(fn ($items) => $items->count());
+
+        $grafikPerLabor = collect($lokasiLab)
+            ->mapWithKeys(fn (string $laboratorium) => [
+                $laboratorium => $semuaKerusakan
+                    ->filter(fn (Kerusakan $data) => ($data->user->lokasi_lab ?? null) === $laboratorium)
+                    ->count(),
+            ])
+            ->all();
+
+        $totalPerKategori = collect(Kerusakan::JENIS_KERUSAKAN)
+            ->mapWithKeys(fn (string $jenis) => [
+                $jenis => $semuaKerusakan->where('jenis_kerusakan', $jenis)->count(),
+            ])
+            ->all();
 
         return view('kepala_lab.dashboard', [
             'totalLaboratorium' => count($lokasiLab),
-            'totalKerusakan' => Kerusakan::count(),
+            'totalKerusakan' => $semuaKerusakan->count(),
             'totalAlatDigunakan' => Peralatan::where('kondisi', 'Digunakan')->count(),
             'grafikBulanan' => $grafikBulanan,
-            'grafikPerLabor' => Kerusakan::countByLaboratorium($lokasiLab),
-            'totalPerKategori' => Kerusakan::countByJenis(),
+            'grafikPerLabor' => $grafikPerLabor,
+            'totalPerKategori' => $totalPerKategori,
             'kerusakan' => $kerusakan,
             'lokasiLab' => $lokasiLab,
             'filter' => $request->only(['tanggal_mulai', 'tanggal_selesai', 'laboratorium', 'status', 'kategori']),
@@ -70,7 +83,13 @@ class KepalaLabController extends Controller
             ->filter(fn ($value) => filled($value))
             ->all();
 
-        return Kerusakan::withReportRelations()
+        return $this->validKerusakanQuery()
             ->filterLaporan($filter);
+    }
+
+    private function validKerusakanQuery()
+    {
+        return Kerusakan::withReportRelations()
+            ->whereHas('peralatan', fn ($query) => $query->whereIn('kondisi', ['Rusak', 'Tidak Bisa Digunakan']));
     }
 }
