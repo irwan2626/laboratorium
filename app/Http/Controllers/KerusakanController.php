@@ -113,7 +113,8 @@ class KerusakanController extends Controller
 
     public function dashboard()
     {
-        $kerusakanUser = Kerusakan::where('user_id', auth()->id());
+        $kerusakanUser = $this->validKerusakanQuery()
+            ->where('user_id', auth()->id());
 
         $total = (clone $kerusakanUser)->count();
         $totalPerJenis = collect(Kerusakan::JENIS_KERUSAKAN)
@@ -209,7 +210,7 @@ class KerusakanController extends Controller
 
     public function dataKerusakan()
     {
-        $kerusakan = Kerusakan::withPeralatan()
+        $kerusakan = $this->validKerusakanQuery()
             ->where('user_id', auth()->id())
             ->latest()
             ->get();
@@ -297,11 +298,17 @@ class KerusakanController extends Controller
 
     public function laporan()
     {
-        $kerusakan = Kerusakan::withPeralatan()
+        $kerusakan = $this->validKerusakanQuery()
             ->latest()
             ->get();
 
         return view('admin.laporan.index', compact('kerusakan'));
+    }
+
+    private function validKerusakanQuery()
+    {
+        return Kerusakan::withPeralatan()
+            ->whereHas('peralatan', fn ($query) => $query->whereIn('kondisi', ['Rusak', 'Tidak Bisa Digunakan']));
     }
 
 }
