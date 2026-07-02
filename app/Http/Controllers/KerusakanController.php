@@ -128,7 +128,9 @@ class KerusakanController extends Controller
             ->take(5)
             ->get();
 
-        $totalAlatDigunakan = Peralatan::where('kondisi', 'Digunakan')->count();
+        $totalAlatDigunakan = Peralatan::whereHas('kerusakan')
+            ->where('kondisi', 'Digunakan')
+            ->count();
 
         return view('asisten.dashboard', compact('total', 'totalPerJenis', 'kerusakanTerbaru', 'totalAlatDigunakan'));
     }
@@ -142,6 +144,7 @@ class KerusakanController extends Controller
     public function checkKode(string $kode)
     {
         $peralatan = Peralatan::where('kode_barang', $kode)
+            ->whereHas('kerusakan')
             ->with(['kerusakan' => fn ($query) => $query->latest()])
             ->first();
 
@@ -174,7 +177,9 @@ class KerusakanController extends Controller
 
     public function create($kode)
     {
-        $peralatan = Peralatan::where('kode_barang', $kode)->first();
+        $peralatan = Peralatan::where('kode_barang', $kode)
+            ->whereHas('kerusakan')
+            ->first();
 
         return view(
             'asisten.create',
@@ -320,9 +325,16 @@ class KerusakanController extends Controller
 
     public function destroy(Kerusakan $kerusakan)
     {
+        $kerusakan->load('peralatan');
+        $peralatan = $kerusakan->peralatan;
+
         $this->deleteFoto($kerusakan->foto);
 
         $kerusakan->delete();
+
+        if ($peralatan && ! $peralatan->kerusakan()->exists()) {
+            $peralatan->delete();
+        }
 
         return redirect('/data-kerusakan')
             ->with('success', 'Data kerusakan berhasil dihapus');

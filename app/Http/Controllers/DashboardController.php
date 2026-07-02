@@ -21,7 +21,7 @@ class DashboardController extends Controller
 
     public function admin()
     {
-        $peralatan = Peralatan::latest()->get();
+        $peralatan = Peralatan::whereHas('kerusakan')->latest()->get();
         $kerusakan = Kerusakan::withPeralatan()
             ->whereHas('peralatan', fn ($query) => $query->whereIn('kondisi', ['Rusak', 'Tidak Bisa Digunakan']))
             ->latest()

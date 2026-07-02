@@ -12,7 +12,7 @@ class PeralatanController extends Controller
      */
     public function index()
     {
-        $peralatan = Peralatan::latest()->get();
+        $peralatan = Peralatan::whereHas('kerusakan')->latest()->get();
 
         return view('admin.peralatan.index', compact('peralatan'));
     }
