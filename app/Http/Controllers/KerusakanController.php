@@ -139,6 +139,39 @@ class KerusakanController extends Controller
         return view('asisten.scan');
     }
 
+    public function checkKode(string $kode)
+    {
+        $peralatan = Peralatan::where('kode_barang', $kode)
+            ->with(['kerusakan' => fn ($query) => $query->latest()])
+            ->first();
+
+        if (! $peralatan) {
+            return response()->json([
+                'exists' => false,
+                'create_url' => url('/kerusakan/create/' . rawurlencode($kode)),
+            ]);
+        }
+
+        $kerusakan = $peralatan->kerusakan->first();
+
+        return response()->json([
+            'exists' => true,
+            'create_url' => url('/kerusakan/create/' . rawurlencode($kode)),
+            'data' => [
+                'kode_barang' => $peralatan->kode_barang,
+                'nama_barang' => $peralatan->nama_barang,
+                'kondisi' => $peralatan->kondisi,
+                'jenis_kerusakan' => $kerusakan?->jenis_kerusakan,
+                'status' => $kerusakan?->status ?? $peralatan->kondisi,
+                'tanggal' => $kerusakan?->tanggal,
+                'deskripsi' => $kerusakan?->deskripsi,
+                'foto_url' => $kerusakan?->foto
+                    ? url('/uploads/' . ltrim($kerusakan->foto, '/'))
+                    : null,
+            ],
+        ]);
+    }
+
     public function create($kode)
     {
         $peralatan = Peralatan::where('kode_barang', $kode)->first();

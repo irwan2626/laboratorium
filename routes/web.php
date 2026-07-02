@@ -216,6 +216,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:asisten'])->group(function () {
     Route::get('/asisten/dashboard', [KerusakanController::class, 'dashboard'])->name('asisten.dashboard');
     Route::get('/scan', [KerusakanController::class, 'scan']);
+    Route::get('/kerusakan/check/{kode}', [KerusakanController::class, 'checkKode']);
     Route::get('/kerusakan/create/{kode}', [KerusakanController::class, 'create']);
     Route::post('/kerusakan/store', [KerusakanController::class, 'store']);
     Route::get('/kerusakan/{kerusakan}/edit', [KerusakanController::class, 'edit']);
