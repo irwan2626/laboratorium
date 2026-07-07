@@ -5,6 +5,7 @@
         <th>Laboratorium</th>
         <th>Kode Barang</th>
         <th>Nama Barang</th>
+        <th>Foto</th>
         <th>Kategori</th>
         <th>Status</th>
         <th>Deskripsi</th>
@@ -17,13 +18,20 @@
             <td>{{ $data->user->lokasi_lab ?? '-' }}</td>
             <td>{{ $data->peralatan->kode_barang }}</td>
             <td>{{ $data->peralatan->nama_barang }}</td>
+            <td>
+                @if($data->foto)
+                    {{ route('kerusakan.foto', ['path' => $data->foto]) }}
+                @else
+                    Tidak ada foto
+                @endif
+            </td>
             <td>{{ $data->jenis_kerusakan }}</td>
             <td>{{ $data->peralatan->kondisi ?? $data->status }}</td>
             <td>{{ $data->deskripsi }}</td>
         </tr>
     @empty
         <tr>
-            <td colspan="8">Tidak ada laporan.</td>
+            <td colspan="9">Tidak ada laporan.</td>
         </tr>
     @endforelse
 </table>

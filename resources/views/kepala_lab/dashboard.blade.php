@@ -545,6 +545,15 @@
             color: var(--error);
         }
 
+        img.preview {
+            width: 92px;
+            height: 70px;
+            object-fit: cover;
+            border: 1px solid var(--outline-variant);
+            border-radius: var(--radius);
+            background: var(--surface-container);
+        }
+
         @media (max-width: 1100px) {
             .shell {
                 grid-template-columns: 232px minmax(0, 1fr);
@@ -885,6 +894,7 @@
                             <th>Laboratorium</th>
                             <th>Kode Barang</th>
                             <th>Nama Barang</th>
+                            <th>Foto</th>
                             <th>Kategori</th>
                             <th>Status</th>
                             <th>Deskripsi</th>
@@ -913,17 +923,27 @@
                                 <td>{{ $laboratorium }}</td>
                                 <td>{{ $data->peralatan->kode_barang }}</td>
                                 <td>{{ $data->peralatan->nama_barang }}</td>
+                                <td>
+                                    @if($data->foto)
+                                        <img
+                                            class="preview"
+                                            src="{{ route('kerusakan.foto', ['path' => $data->foto]) }}"
+                                            alt="Foto kerusakan">
+                                    @else
+                                        Tidak ada foto
+                                    @endif
+                                </td>
                                 <td><span class="status-pill {{ $statusClass }}">{{ $data->jenis_kerusakan }}</span></td>
                                 <td><span class="status-pill">{{ $status }}</span></td>
                                 <td>{{ $data->deskripsi }}</td>
                             </tr>
                         @empty
                             <tr data-empty-row>
-                                <td colspan="8">Tidak ada laporan sesuai filter.</td>
+                                <td colspan="9">Tidak ada laporan sesuai filter.</td>
                             </tr>
                         @endforelse
                         <tr id="client-empty-row" style="display: none;">
-                            <td colspan="8">Tidak ada laporan sesuai filter.</td>
+                            <td colspan="9">Tidak ada laporan sesuai filter.</td>
                         </tr>
                     </table>
                 </div>
