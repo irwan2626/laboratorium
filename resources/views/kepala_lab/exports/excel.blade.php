@@ -18,7 +18,7 @@
             <td>{{ $data->peralatan->kode_barang }}</td>
             <td>{{ $data->peralatan->nama_barang }}</td>
             <td>{{ $data->jenis_kerusakan }}</td>
-            <td>{{ $data->status }}</td>
+            <td>{{ $data->peralatan->kondisi ?? $data->status }}</td>
             <td>{{ $data->deskripsi }}</td>
         </tr>
     @empty

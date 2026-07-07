@@ -892,6 +892,8 @@
 
                         @forelse($kerusakan as $data)
                             @php
+                                $laboratorium = $data->user->lokasi_lab ?? '-';
+                                $status = $data->peralatan->kondisi ?? $data->status;
                                 $statusClass = match ($data->jenis_kerusakan) {
                                     'Ringan' => 'light',
                                     'Sedang' => 'medium',
@@ -903,16 +905,16 @@
                             <tr
                                 data-laporan-row
                                 data-tanggal="{{ $data->tanggal }}"
-                                data-laboratorium="{{ $data->user->lokasi_lab ?? '-' }}"
-                                data-status="{{ $data->status }}"
+                                data-laboratorium="{{ $laboratorium }}"
+                                data-status="{{ $status }}"
                                 data-kategori="{{ $data->jenis_kerusakan }}">
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->tanggal }}</td>
-                                <td>{{ $data->user->lokasi_lab ?? '-' }}</td>
+                                <td>{{ $laboratorium }}</td>
                                 <td>{{ $data->peralatan->kode_barang }}</td>
                                 <td>{{ $data->peralatan->nama_barang }}</td>
                                 <td><span class="status-pill {{ $statusClass }}">{{ $data->jenis_kerusakan }}</span></td>
-                                <td><span class="status-pill">{{ $data->status }}</span></td>
+                                <td><span class="status-pill">{{ $status }}</span></td>
                                 <td>{{ $data->deskripsi }}</td>
                             </tr>
                         @empty
@@ -939,6 +941,9 @@
             const kategoriSelect = document.getElementById('filter-kategori');
             const laporanRows = Array.from(document.querySelectorAll('[data-laporan-row]'));
             const clientEmptyRow = document.getElementById('client-empty-row');
+            const normalizeFilterValue = function (value) {
+                return (value || '').trim().toLowerCase();
+            };
 
             function rowMatchesFilter(row) {
                 const tanggalMulai = tanggalMulaiInput.value;
@@ -956,15 +961,15 @@
                     return false;
                 }
 
-                if (laboratorium && row.dataset.laboratorium !== laboratorium) {
+                if (laboratorium && normalizeFilterValue(row.dataset.laboratorium) !== normalizeFilterValue(laboratorium)) {
                     return false;
                 }
 
-                if (status && row.dataset.status !== status) {
+                if (status && normalizeFilterValue(row.dataset.status) !== normalizeFilterValue(status)) {
                     return false;
                 }
 
-                if (kategori && row.dataset.kategori !== kategori) {
+                if (kategori && normalizeFilterValue(row.dataset.kategori) !== normalizeFilterValue(kategori)) {
                     return false;
                 }
 

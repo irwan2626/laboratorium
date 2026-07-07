@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -20,7 +21,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view('auth.register', [
+            'lokasiLab' => User::LOKASI_LAB,
+        ]);
     }
 
     /**
@@ -34,6 +37,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'role' => ['required', 'in:admin,asisten,kepala_lab'],
+            'lokasi_lab' => ['required_if:role,asisten', 'nullable', Rule::in(User::LOKASI_LAB)],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -41,6 +45,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
+            'lokasi_lab' => $request->role === 'asisten' ? $request->lokasi_lab : null,
             'password' => Hash::make($request->password),
         ]);
 

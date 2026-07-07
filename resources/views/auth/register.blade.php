@@ -24,6 +24,19 @@
             </select>
             <x-input-error :messages="$errors->get('role')" class="mt-2" />
         </div>
+
+        <div id="lokasi-lab-wrapper" style="display: none;">
+            <x-input-label for="lokasi_lab" value="Lokasi Laboratorium" />
+            <select id="lokasi_lab" name="lokasi_lab">
+                <option value="">Pilih lokasi laboratorium</option>
+                @foreach($lokasiLab as $lokasi)
+                    <option value="{{ $lokasi }}" @selected(old('lokasi_lab') === $lokasi)>
+                        {{ $lokasi }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('lokasi_lab')" class="mt-2" />
+        </div>
         
         <div>
             <x-input-label for="password" :value="__('Password')" />
@@ -59,4 +72,24 @@
             </button>
         </div>
     </form>
+
+    <script>
+        const roleSelect = document.getElementById('role');
+        const lokasiWrapper = document.getElementById('lokasi-lab-wrapper');
+        const lokasiSelect = document.getElementById('lokasi_lab');
+
+        function toggleLokasiLab() {
+            const isAsisten = roleSelect.value === 'asisten';
+
+            lokasiWrapper.style.display = isAsisten ? 'grid' : 'none';
+            lokasiSelect.required = isAsisten;
+
+            if (! isAsisten) {
+                lokasiSelect.value = '';
+            }
+        }
+
+        roleSelect.addEventListener('change', toggleLokasiLab);
+        toggleLokasiLab();
+    </script>
 </x-guest-layout>

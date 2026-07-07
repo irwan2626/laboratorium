@@ -85,13 +85,19 @@ class KepalaLabController extends Controller
             ->filter(fn ($value) => filled($value))
             ->all();
 
-        return $this->validKerusakanQuery()
+        return $this->activeKerusakanQuery()
             ->filterLaporan($filter);
+    }
+
+    private function activeKerusakanQuery()
+    {
+        return Kerusakan::withReportRelations()
+            ->whereHas('peralatan');
     }
 
     private function validKerusakanQuery()
     {
-        return Kerusakan::withReportRelations()
+        return $this->activeKerusakanQuery()
             ->whereHas('peralatan', fn ($query) => $query->whereIn('kondisi', ['Rusak', 'Tidak Bisa Digunakan']));
     }
 }

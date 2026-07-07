@@ -58,9 +58,15 @@ class Kerusakan extends Model
             ->when($filter['tanggal_mulai'] ?? null, fn (Builder $query, string $tanggalMulai) => $query->whereDate('tanggal', '>=', $tanggalMulai))
             ->when($filter['tanggal_selesai'] ?? null, fn (Builder $query, string $tanggalSelesai) => $query->whereDate('tanggal', '<=', $tanggalSelesai))
             ->when($filter['laboratorium'] ?? null, function (Builder $query, string $laboratorium) {
-                $query->whereHas('user', fn (Builder $userQuery) => $userQuery->where('lokasi_lab', $laboratorium));
+                $laboratorium = strtolower(trim($laboratorium));
+
+                $query->whereHas('user', function (Builder $userQuery) use ($laboratorium) {
+                    $userQuery->whereRaw('LOWER(TRIM(lokasi_lab)) = ?', [$laboratorium]);
+                });
             })
-            ->when($filter['status'] ?? null, fn (Builder $query, string $status) => $query->where('status', $status))
+            ->when($filter['status'] ?? null, function (Builder $query, string $status) {
+                $query->whereHas('peralatan', fn (Builder $peralatanQuery) => $peralatanQuery->where('kondisi', $status));
+            })
             ->when($filter['kategori'] ?? null, fn (Builder $query, string $kategori) => $query->where('jenis_kerusakan', $kategori));
     }
 
