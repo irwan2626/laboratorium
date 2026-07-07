@@ -20,7 +20,7 @@
             <td>{{ $data->peralatan->nama_barang }}</td>
             <td>
                 @if($data->foto)
-                    {{ route('kerusakan.foto', ['path' => $data->foto]) }}
+                    {{ Storage::disk('public')->url($data->foto) }}
                 @else
                     Tidak ada foto
                 @endif
